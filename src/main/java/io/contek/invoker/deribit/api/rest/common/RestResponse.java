@@ -6,5 +6,6 @@ import javax.annotation.concurrent.NotThreadSafe;
 public abstract class RestResponse<T> {
 
   public String jsonrpc;
+  public int id;
   public T result;
 }
