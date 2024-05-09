@@ -1,30 +1,31 @@
 package io.contek.invoker.deribit.api.common;
 
 import javax.annotation.concurrent.NotThreadSafe;
+import java.math.BigDecimal;
 
 @NotThreadSafe
 public class _UserTrade {
 
-  public Long trade_seq;
+  public long trade_seq;
   public String trade_id;
-  public Long timestamp;
-  public Integer tick_direction;
+  public long timestamp;
+  public int tick_direction;
   public String state;
-  public Boolean self_trade;
-  public Boolean reduce_only;
-  public Double price;
-  public Boolean post_only;
+  public boolean self_trade;
+  public boolean reduce_only;
+  public BigDecimal price;
+  public boolean post_only;
   public String order_type;
   public String order_id;
   public String matching_id;
-  public Double mark_price;
+  public BigDecimal mark_price;
   public String liquidity;
   public String instrument_name;
   public Double index_price;
   public String fee_currency;
-  public Double fee;
+  public BigDecimal fee;
   public String direction;
-  public Double amount;
+  public BigDecimal amount;
   public String advanced;
   public String block_trade_id;
   public Double iv;
