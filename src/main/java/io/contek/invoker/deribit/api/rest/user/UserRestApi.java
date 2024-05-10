@@ -80,6 +80,10 @@ public final class UserRestApi {
     return new GetUserTradesByInstrumentAndTime(actor, context);
   }
 
+  public GetUserTradesByCurrencyAndTime getUserTradesByCurrencyAndTime() {
+    return new GetUserTradesByCurrencyAndTime(actor, context);
+  }
+
   public GetAccountSummary getAccountSummary() {
     return new GetAccountSummary(actor, context);
   }
