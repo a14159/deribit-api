@@ -10,6 +10,7 @@ import io.contek.invoker.deribit.api.common._PlaceOrderResponse;
 import io.contek.invoker.deribit.api.rest.common.RestResponse;
 
 import javax.annotation.concurrent.NotThreadSafe;
+import java.math.BigDecimal;
 
 import static io.contek.invoker.commons.rest.RestMethod.GET;
 import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.ONE_API_KEY_MATCHING_ENGINE_REQUEST;
@@ -20,16 +21,16 @@ public abstract class BasePlaceOrderRequest
     extends UserRestRequest<BasePlaceOrderRequest.Response> {
 
   private String instrument_name;
-  private Double amount;
+  private BigDecimal amount;
   private String type;
   private String label;
-  private Double price;
+  private BigDecimal price;
   private String time_in_force;
   private Double max_show;
   private Boolean post_only;
   private Boolean reject_post_only;
   private Boolean reduce_only;
-  private Double stop_price;
+  private BigDecimal stop_price;
   private String trigger;
   private String advanced;
   private Boolean mmp;
@@ -43,7 +44,7 @@ public abstract class BasePlaceOrderRequest
     return this;
   }
 
-  public final BasePlaceOrderRequest setAmount(Double amount) {
+  public final BasePlaceOrderRequest setAmount(BigDecimal amount) {
     this.amount = amount;
     return this;
   }
@@ -58,7 +59,7 @@ public abstract class BasePlaceOrderRequest
     return this;
   }
 
-  public final BasePlaceOrderRequest setPrice(double price) {
+  public final BasePlaceOrderRequest setPrice(BigDecimal price) {
     this.price = price;
     return this;
   }
@@ -88,7 +89,7 @@ public abstract class BasePlaceOrderRequest
     return this;
   }
 
-  public final BasePlaceOrderRequest setStopPrice(double stopPrice) {
+  public final BasePlaceOrderRequest setStopPrice(BigDecimal stopPrice) {
     this.stop_price = stopPrice;
     return this;
   }
@@ -124,7 +125,7 @@ public abstract class BasePlaceOrderRequest
     builder.add("instrument_name", instrument_name);
 
     requireNonNull(amount);
-    builder.add("amount", amount);
+    builder.add("amount", amount.toPlainString());
 
     requireNonNull(type);
     builder.add("type", type);
@@ -134,7 +135,7 @@ public abstract class BasePlaceOrderRequest
     }
 
     if (price != null) {
-      builder.add("price", price);
+      builder.add("price", price.toPlainString());
     }
 
     if (time_in_force != null) {
@@ -158,7 +159,7 @@ public abstract class BasePlaceOrderRequest
     }
 
     if (stop_price != null) {
-      builder.add("stop_price", stop_price);
+      builder.add("stop_price", stop_price.toPlainString());
     }
 
     if (trigger != null) {

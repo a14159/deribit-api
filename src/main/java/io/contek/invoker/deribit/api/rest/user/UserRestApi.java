@@ -16,6 +16,10 @@ public final class UserRestApi {
     this.context = context;
   }
 
+  public GetEnableCancelOnDisconnect getEnableCancelOnDisconnect() {
+    return new GetEnableCancelOnDisconnect(actor, context);
+  }
+
   public GetBuy getBuy() {
     return new GetBuy(actor, context);
   }
@@ -30,6 +34,10 @@ public final class UserRestApi {
 
   public GetCancelByLabel getCancelByLabel() {
     return new GetCancelByLabel(actor, context);
+  }
+
+  public GetCancelAllByInstrument getCancelAllByInstrument() {
+    return new GetCancelAllByInstrument(actor, context);
   }
 
   public GetCancelAll getCancelAll() {

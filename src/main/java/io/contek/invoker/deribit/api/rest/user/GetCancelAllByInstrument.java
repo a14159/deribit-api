@@ -15,21 +15,21 @@ import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.ONE_API_KEY_MA
 import static java.util.Objects.requireNonNull;
 
 @NotThreadSafe
-public final class GetEnableCancelOnDisconnect extends UserRestRequest<GetEnableCancelOnDisconnect.Response> {
+public final class GetCancelAllByInstrument extends UserRestRequest<GetCancelAllByInstrument.Response> {
 
-  private String scope = "account";
+  private String instrument;
 
-  GetEnableCancelOnDisconnect(IActor actor, RestContext context) {
+  GetCancelAllByInstrument(IActor actor, RestContext context) {
     super(actor, context);
   }
 
-  public GetEnableCancelOnDisconnect setScope(String scope) {
-    this.scope = scope;
+  public GetCancelAllByInstrument setInstrumentName(String instrument_name) {
+    this.instrument = instrument_name;
     return this;
   }
 
   @Override
-  protected Class<GetEnableCancelOnDisconnect.Response> getResponseType() {
+  protected Class<GetCancelAllByInstrument.Response> getResponseType() {
     return Response.class;
   }
 
@@ -40,15 +40,15 @@ public final class GetEnableCancelOnDisconnect extends UserRestRequest<GetEnable
 
   @Override
   protected String getEndpointPath() {
-    return "/api/v2/private/enable_cancel_on_disconnect";
+    return "/api/v2/private/cancel_all_by_instrument";
   }
 
   @Override
   protected RestParams getParams() {
     RestParams.Builder builder = RestParams.newBuilder();
 
-    requireNonNull(scope);
-    builder.add("scope", scope);
+    requireNonNull(instrument);
+    builder.add("instrument_name", instrument);
 
     return builder.build();
   }
@@ -59,5 +59,5 @@ public final class GetEnableCancelOnDisconnect extends UserRestRequest<GetEnable
   }
 
   @NotThreadSafe
-  public static final class Response extends RestResponse<String> {}
+  public static final class Response extends RestResponse<Integer> {}
 }
