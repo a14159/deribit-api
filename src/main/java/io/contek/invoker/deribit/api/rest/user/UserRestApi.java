@@ -76,6 +76,10 @@ public final class UserRestApi {
     return new GetUserTradesByOrder(actor, context);
   }
 
+  public GetUserTradesByInstrumentAndTime getUserTradesByInstrumentAndTime() {
+    return new GetUserTradesByInstrumentAndTime(actor, context);
+  }
+
   public GetAccountSummary getAccountSummary() {
     return new GetAccountSummary(actor, context);
   }
