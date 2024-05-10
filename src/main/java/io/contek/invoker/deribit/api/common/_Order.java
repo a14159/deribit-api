@@ -1,6 +1,7 @@
 package io.contek.invoker.deribit.api.common;
 
 import javax.annotation.concurrent.NotThreadSafe;
+import java.math.BigDecimal;
 
 @NotThreadSafe
 public class _Order {
@@ -8,25 +9,25 @@ public class _Order {
   public String order_state;
   public Double max_show;
   public Boolean api;
-  public Double amount;
+  public BigDecimal amount;
   public Boolean web;
   public String instrument_name;
   public String advanced;
   public Boolean triggered;
   public Boolean block_trade;
   public String original_order_type;
-  public Double price;
+  public BigDecimal price;
   public String time_in_force;
   public Boolean auto_replaced;
   public String stop_order_id;
   public Long last_update_timestamp;
   public Boolean post_only;
   public Boolean replaced;
-  public Double filled_amount;
+  public BigDecimal filled_amount;
   public Double average_price;
   public String order_id;
   public Boolean reduce_only;
-  public Double commission;
+  public BigDecimal commission;
   public String app_name;
   public Double stop_price;
   public String label;
