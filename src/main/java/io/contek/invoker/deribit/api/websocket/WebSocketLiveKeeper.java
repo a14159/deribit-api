@@ -10,7 +10,6 @@ import io.contek.invoker.deribit.api.websocket.common.WebSocketTestResponse;
 import org.slf4j.Logger;
 
 import javax.annotation.concurrent.ThreadSafe;
-import java.time.Clock;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -19,13 +18,11 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
 
     private static final Logger log = getLogger(WebSocketLiveKeeper.class);
 
-    private final String name;
     private final WebSocketRequestIdGenerator requestIdGenerator;
     private volatile int heartbeats = 0;
     private volatile int testResponses = 0;
 
-    WebSocketLiveKeeper(String name, WebSocketRequestIdGenerator requestIdGenerator) {
-        this.name = name;
+    WebSocketLiveKeeper(WebSocketRequestIdGenerator requestIdGenerator) {
         this.requestIdGenerator = requestIdGenerator;
     }
 
@@ -37,14 +34,14 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
     public void onMessage(AnyWebSocketMessage message, WebSocketSession session) {
         if (message instanceof WebSocketHeartbeat) {
             heartbeats++;
-            log.debug("Received heartbeat message {} on WebSocket connection \"{}\".", heartbeats, name);
+            log.debug("Received heartbeat message #{}", heartbeats);
             WebSocketTestRequest request = new WebSocketTestRequest();
             request.id = requestIdGenerator.getNextRequestId(WebSocketTestResponse.class);
             session.send(request);
         }
         if (message instanceof WebSocketTestResponse) {
             testResponses++;
-            log.debug("Received test response message {} on WebSocket connection \"{}\".", testResponses, name);
+            log.debug("Received test response message #{}", testResponses);
         }
     }
 
