@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 import io.contek.invoker.commons.websocket.IWebSocketComponent;
 import io.contek.invoker.commons.websocket.WebSocketTextMessageParser;
+import io.contek.invoker.deribit.api.websocket.common.WebSocketHeartbeat;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketInboundMessage;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketResponse;
 import io.contek.invoker.deribit.api.websocket.common.constants.WebSocketChannelKeys;
@@ -16,7 +17,6 @@ import io.contek.invoker.deribit.api.websocket.user.UserChangesChannel;
 import io.contek.invoker.deribit.api.websocket.user.UserOrdersChannel;
 
 import javax.annotation.concurrent.ThreadSafe;
-import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.String.format;
@@ -27,7 +27,7 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
   private final Gson gson = new Gson();
 
   private final Map<Integer, Class<? extends WebSocketResponse<?>>> pendingRequests =
-      new HashMap<>();
+      new ExpiringMap<>(100);
 
   public void register(Integer id, Class<? extends WebSocketResponse<?>> type) {
     synchronized (pendingRequests) {
@@ -48,6 +48,8 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
     if (obj.has("id")) {
       return toResponseMessage(obj);
     } else if (obj.has("params")) {
+      if (obj.has("method") && obj.get("method").getAsString().equals("heartbeat"))
+        return new WebSocketHeartbeat();
       return toDataMessage(obj);
     } else {
       throw new IllegalArgumentException(text);

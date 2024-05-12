@@ -33,7 +33,7 @@ public abstract class WebSocketApi extends BaseWebSocketApi {
         actor,
         parser,
         new WebSocketAuthenticator(actor.getCredential(), requestIdGenerator, actor.getClock()),
-        IWebSocketLiveKeeper.noOp());
+        new WebSocketLiveKeeper("", requestIdGenerator));
     this.context = context;
     this.requestIdGenerator = requestIdGenerator;
   }
