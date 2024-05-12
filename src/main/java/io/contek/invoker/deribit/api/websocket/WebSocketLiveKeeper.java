@@ -4,9 +4,7 @@ import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 import io.contek.invoker.commons.websocket.IWebSocketLiveKeeper;
 import io.contek.invoker.commons.websocket.WebSocketSession;
 import io.contek.invoker.commons.websocket.WebSocketSessionInactiveException;
-import io.contek.invoker.deribit.api.websocket.common.WebSocketHeartbeat;
-import io.contek.invoker.deribit.api.websocket.common.WebSocketTestRequest;
-import io.contek.invoker.deribit.api.websocket.common.WebSocketTestResponse;
+import io.contek.invoker.deribit.api.websocket.common.*;
 import org.slf4j.Logger;
 
 import javax.annotation.concurrent.ThreadSafe;
@@ -21,6 +19,7 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
     private final WebSocketRequestIdGenerator requestIdGenerator;
     private volatile int heartbeats = 0;
     private volatile int testResponses = 0;
+    private volatile boolean initialized = false;
 
     WebSocketLiveKeeper(WebSocketRequestIdGenerator requestIdGenerator) {
         this.requestIdGenerator = requestIdGenerator;
@@ -28,6 +27,14 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
 
     @Override
     public void onHeartbeat(WebSocketSession session) throws WebSocketSessionInactiveException {
+        if (!initialized) {
+            log.debug("Sending set heartbeat request");
+            WebSocketSetHeartbeatRequest request = new WebSocketSetHeartbeatRequest();
+            request.interval = 30;
+            request.id = requestIdGenerator.getNextRequestId(HeartbeatResponse.class);
+            session.send(request);
+            initialized = true;
+        }
     }
 
     @Override
@@ -43,6 +50,9 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
             testResponses++;
             log.debug("Received test response message #{}", testResponses);
         }
+        if (message instanceof HeartbeatResponse hb) {
+            log.debug("Receiving set heartbeat response: {}", hb.result);
+        }
     }
 
     @Override
@@ -50,4 +60,6 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
         heartbeats = 0;
         testResponses = 0;
     }
+
+    public static final class HeartbeatResponse extends WebSocketResponse<String> {}
 }
