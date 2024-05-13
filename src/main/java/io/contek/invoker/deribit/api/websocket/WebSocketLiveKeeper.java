@@ -8,7 +8,6 @@ import io.contek.invoker.deribit.api.websocket.common.*;
 import org.slf4j.Logger;
 
 import javax.annotation.concurrent.ThreadSafe;
-
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.slf4j.LoggerFactory.getLogger;

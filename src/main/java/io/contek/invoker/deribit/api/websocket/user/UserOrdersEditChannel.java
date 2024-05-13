@@ -1,6 +1,5 @@
 package io.contek.invoker.deribit.api.websocket.user;
 
-import io.contek.invoker.deribit.api.common._Order;
 import io.contek.invoker.deribit.api.websocket.WebSocketNoSubscribeId;
 import io.contek.invoker.deribit.api.websocket.WebSocketRequestIdGenerator;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketResponse;
@@ -8,13 +7,11 @@ import io.contek.invoker.deribit.api.websocket.common.WebSocketResponse;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;
-
 import java.math.BigDecimal;
 
-import static java.lang.String.format;
 
 @ThreadSafe
-public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel<UserOrdersEditChannel.Message, UserOrdersEditChannel.Data> {
+public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel<UserOrdersEditChannel.Message, String> {
 
   UserOrdersEditChannel(Id id, WebSocketRequestIdGenerator requestIdGenerator) {
     super(id, requestIdGenerator);
@@ -45,7 +42,5 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
   }
 
   @NotThreadSafe
-  public static final class Message extends WebSocketResponse<Data> {}
-
-  public static final class Data extends _Order {}
+  public static final class Message extends WebSocketResponse<String> {}
 }

@@ -2,7 +2,6 @@ package io.contek.invoker.deribit.api.websocket;
 
 import io.contek.invoker.commons.websocket.BaseWebSocketChannelId;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketResponse;
-import io.contek.invoker.deribit.api.websocket.common.WebSocketSingleChannelMessage;
 
 import javax.annotation.concurrent.Immutable;
 
