@@ -7,6 +7,7 @@ import io.contek.invoker.deribit.api.websocket.WebSocketApi;
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 @ThreadSafe
 public final class UserWebSocketApi extends WebSocketApi {
@@ -16,6 +17,8 @@ public final class UserWebSocketApi extends WebSocketApi {
       new HashMap<>();
   private final Map<UserTradesChannel.Id, UserTradesChannel> userTradesChannels = new HashMap<>();
   private final Map<UserTickersChannel.Id, UserTickersChannel> userTickersChannels = new HashMap<>();
+
+  private final AtomicReference<UserOrdersEditChannel> orderEditChannel = new AtomicReference<>();
 
   public UserWebSocketApi(IActor actor, WebSocketContext context) {
     super(actor, context);
@@ -54,6 +57,19 @@ public final class UserWebSocketApi extends WebSocketApi {
             attach(result);
             return result;
           });
+    }
+  }
+
+  public UserOrdersEditChannel getUserOrdersEditChannel() {
+    synchronized (orderEditChannel) {
+      return orderEditChannel.getAndUpdate(k -> {
+        if (k == null) {
+          UserOrdersEditChannel rez = new UserOrdersEditChannel(new UserOrdersEditChannel.Id(""), getRequestIdGenerator());
+          attach(rez);
+          return rez;
+        }
+        return k;
+      });
     }
   }
 
