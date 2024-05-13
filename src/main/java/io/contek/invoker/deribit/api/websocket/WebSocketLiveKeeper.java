@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 
 import javax.annotation.concurrent.ThreadSafe;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static org.slf4j.LoggerFactory.getLogger;
 
 @ThreadSafe
@@ -19,7 +21,7 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
     private final WebSocketRequestIdGenerator requestIdGenerator;
     private volatile int heartbeats = 0;
     private volatile int testResponses = 0;
-    private volatile boolean initialized = false;
+    private final AtomicBoolean initialized = new AtomicBoolean(false);
 
     WebSocketLiveKeeper(WebSocketRequestIdGenerator requestIdGenerator) {
         this.requestIdGenerator = requestIdGenerator;
@@ -27,13 +29,15 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
 
     @Override
     public void onHeartbeat(WebSocketSession session) throws WebSocketSessionInactiveException {
-        if (!initialized) {
-            log.debug("Sending set heartbeat request");
-            WebSocketSetHeartbeatRequest request = new WebSocketSetHeartbeatRequest();
-            request.interval = 30;
-            request.id = requestIdGenerator.getNextRequestId(HeartbeatResponse.class);
-            session.send(request);
-            initialized = true;
+        synchronized (initialized) {
+            if (!initialized.get()) {
+                log.debug("Sending set heartbeat request");
+                WebSocketSetHeartbeatRequest request = new WebSocketSetHeartbeatRequest();
+                request.interval = 30;
+                request.id = requestIdGenerator.getNextRequestId(HeartbeatResponse.class);
+                session.send(request);
+                initialized.set(true);
+            }
         }
     }
 
