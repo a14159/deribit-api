@@ -7,8 +7,11 @@ import javax.annotation.concurrent.NotThreadSafe;
 @NotThreadSafe
 public abstract class WebSocketResponse<R> extends WebSocketInboundMessage {
 
-  public Integer id;
   public String jsonrpc;
+  public Integer id;
   public R result;
   public _Error error;
+  public Long usIn;
+  public Long usOut;
+  public Long usDiff;
 }

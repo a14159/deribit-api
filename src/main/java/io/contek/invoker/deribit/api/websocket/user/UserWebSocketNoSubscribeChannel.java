@@ -19,6 +19,7 @@ public abstract class UserWebSocketNoSubscribeChannel<Message extends WebSocketR
     extends BaseWebSocketChannel<WebSocketNoSubscribeId<Message>, Message, Data> {
 
   protected WebSocketRequestIdGenerator idGenerator;
+  protected volatile WebSocketSession session;
   private SubscriptionState state = UNSUBSCRIBED;
 
   UserWebSocketNoSubscribeChannel(
@@ -35,12 +36,14 @@ public abstract class UserWebSocketNoSubscribeChannel<Message extends WebSocketR
   @Override
   protected SubscriptionState subscribe(WebSocketSession webSocketSession) {
     this.state = SUBSCRIBED;
+    this.session = webSocketSession;
     return SUBSCRIBED;
   }
 
   @Override
   protected SubscriptionState unsubscribe(WebSocketSession webSocketSession) {
     this.state = UNSUBSCRIBED;
+    this.session = null;
     return UNSUBSCRIBED;
   }
 
@@ -53,5 +56,6 @@ public abstract class UserWebSocketNoSubscribeChannel<Message extends WebSocketR
   @Override
   protected void reset() {
     state = UNSUBSCRIBED;
+    session = null;
   }
 }
