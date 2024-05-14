@@ -7,6 +7,7 @@ import io.contek.invoker.deribit.api.websocket.common.WebSocketSingleChannelMess
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static io.contek.invoker.deribit.api.websocket.common.constants.WebSocketChannelKeys._trades;
@@ -43,7 +44,7 @@ public final class TradesChannel
   @NotThreadSafe
   public static final class Data {
 
-    public long amount;
+    public BigDecimal amount;
     public String block_trade_id;
     public String direction;
     public double index_price;
@@ -51,7 +52,7 @@ public final class TradesChannel
     public double iv;
     public String liquidation;
     public double mark_price;
-    public double price;
+    public BigDecimal price;
     public int tick_direction;
     public long timestamp;
     public String trade_id;
