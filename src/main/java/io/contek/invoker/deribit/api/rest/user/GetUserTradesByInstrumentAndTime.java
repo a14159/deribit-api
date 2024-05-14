@@ -6,11 +6,10 @@ import io.contek.invoker.commons.actor.ratelimit.TypedPermitRequest;
 import io.contek.invoker.commons.rest.RestContext;
 import io.contek.invoker.commons.rest.RestMethod;
 import io.contek.invoker.commons.rest.RestParams;
-import io.contek.invoker.deribit.api.common._UserTrade;
+import io.contek.invoker.deribit.api.common._UserTrades;
 import io.contek.invoker.deribit.api.rest.common.RestResponse;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import java.util.List;
 
 import static io.contek.invoker.commons.rest.RestMethod.GET;
 import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.ONE_API_KEY_NON_MATCHING_ENGINE_REQUEST;
@@ -61,7 +60,7 @@ public final class GetUserTradesByInstrumentAndTime
     builder.add("instrument_name", instrumentName);
     builder.add("start_timestamp", startTime);
     builder.add("end_timestamp", endTime);
-    builder.add("count", 10000);
+    builder.add("count", 1000);
 
     return builder.build();
   }
@@ -77,5 +76,5 @@ public final class GetUserTradesByInstrumentAndTime
   }
 
   @NotThreadSafe
-  public static final class Response extends RestResponse<List<_UserTrade>> {}
+  public static final class Response extends RestResponse<_UserTrades> {}
 }
