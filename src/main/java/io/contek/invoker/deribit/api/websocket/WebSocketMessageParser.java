@@ -15,6 +15,7 @@ import io.contek.invoker.deribit.api.websocket.market.BookSnapshotChannel;
 import io.contek.invoker.deribit.api.websocket.market.TradesChannel;
 import io.contek.invoker.deribit.api.websocket.user.UserChangesChannel;
 import io.contek.invoker.deribit.api.websocket.user.UserOrdersChannel;
+import io.contek.invoker.deribit.api.websocket.user.UserTickersChannel;
 
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.Map;
@@ -81,6 +82,8 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
     }
     if (channel.startsWith(WebSocketChannelKeys._user_orders)) {
       return gson.fromJson(obj, UserOrdersChannel.Message.class);
+    } if (channel.startsWith(WebSocketChannelKeys._tickers)) {
+      return gson.fromJson(obj, UserTickersChannel.Message.class);
     } else {
       throw new IllegalArgumentException(obj.toString());
     }
