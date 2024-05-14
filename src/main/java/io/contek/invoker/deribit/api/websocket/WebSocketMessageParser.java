@@ -16,6 +16,7 @@ import io.contek.invoker.deribit.api.websocket.market.TradesChannel;
 import io.contek.invoker.deribit.api.websocket.user.UserChangesChannel;
 import io.contek.invoker.deribit.api.websocket.user.UserOrdersChannel;
 import io.contek.invoker.deribit.api.websocket.user.UserTickersChannel;
+import io.contek.invoker.deribit.api.websocket.user.UserTradesChannel;
 
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.Map;
@@ -75,14 +76,20 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
         return gson.fromJson(obj, BookChangeChannel.Message.class);
       }
       return gson.fromJson(obj, BookSnapshotChannel.Message.class);
-    } else if (channel.startsWith(WebSocketChannelKeys._trades)) {
+    }
+    if (channel.startsWith(WebSocketChannelKeys._trades)) {
       return gson.fromJson(obj, TradesChannel.Message.class);
-    } else if (channel.startsWith(WebSocketChannelKeys._user_changes)) {
+    }
+    if (channel.startsWith(WebSocketChannelKeys._user_changes)) {
       return gson.fromJson(obj, UserChangesChannel.Message.class);
     }
     if (channel.startsWith(WebSocketChannelKeys._user_orders)) {
       return gson.fromJson(obj, UserOrdersChannel.Message.class);
-    } if (channel.startsWith(WebSocketChannelKeys._tickers)) {
+    }
+    if (channel.startsWith(WebSocketChannelKeys._user_trades)) {
+      return gson.fromJson(obj, UserTradesChannel.Message.class);
+    }
+    if (channel.startsWith(WebSocketChannelKeys._tickers)) {
       return gson.fromJson(obj, UserTickersChannel.Message.class);
     } else {
       throw new IllegalArgumentException(obj.toString());
