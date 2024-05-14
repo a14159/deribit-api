@@ -16,8 +16,7 @@ import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.ONE_API_KEY_NO
 import static java.util.Objects.requireNonNull;
 
 @NotThreadSafe
-public final class GetUserTradesByCurrencyAndTime
-    extends UserRestRequest<GetUserTradesByCurrencyAndTime.Response> {
+public final class GetUserTradesByCurrencyAndTime extends UserRestRequest<GetUserTradesByCurrencyAndTime.Response> {
 
   private String currency;
   private String kind;
