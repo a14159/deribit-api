@@ -88,6 +88,10 @@ public final class UserRestApi {
     return new GetAccountSummary(actor, context);
   }
 
+  public GetAccountSummaries getAccountSummaries() {
+    return new GetAccountSummaries(actor, context);
+  }
+
   public GetOpenOrdersByInstrument getOpenOrdersByInstrument() {
     return new GetOpenOrdersByInstrument(actor, context);
   }
