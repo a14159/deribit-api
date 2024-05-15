@@ -67,7 +67,7 @@ public final class GetUserTradesByCurrencyAndTime extends UserRestRequest<GetUse
     builder.add("kind", kind);
     builder.add("start_timestamp", startTime);
     builder.add("end_timestamp", endTime);
-    builder.add("count", 10000);
+    builder.add("count", 1000);
 
     return builder.build();
   }

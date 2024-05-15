@@ -8,6 +8,7 @@ import io.contek.invoker.deribit.api.websocket.common.WebSocketSingleChannelMess
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;
+import java.util.ArrayList;
 
 import static java.lang.String.format;
 
@@ -44,5 +45,5 @@ public final class UserTradesChannel
   public static final class Message extends WebSocketSingleChannelMessage<Data> {}
 
   @NotThreadSafe
-  public static final class Data extends _UserTrade {}
+  public static final class Data extends ArrayList<_UserTrade> {}
 }
