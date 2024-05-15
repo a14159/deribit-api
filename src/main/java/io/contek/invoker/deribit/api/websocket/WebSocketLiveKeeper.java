@@ -31,9 +31,11 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
         synchronized (initialized) {
             if (!initialized.get()) {
                 log.debug("Sending set heartbeat request");
-                WebSocketSetHeartbeatRequest request = new WebSocketSetHeartbeatRequest();
-                request.interval = 30;
+                HeartbeatParams params = new HeartbeatParams();
+                WebSocketRequest<HeartbeatParams> request = new WebSocketRequest<>();
                 request.id = requestIdGenerator.getNextRequestId(HeartbeatResponse.class);
+                request.method = "public/set_heartbeat";
+                request.params = params;
                 session.send(request);
                 initialized.set(true);
             }

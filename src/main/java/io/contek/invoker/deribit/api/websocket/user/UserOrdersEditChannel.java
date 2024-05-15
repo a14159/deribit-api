@@ -40,14 +40,17 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
   }
 
   public int placeLimitOrder(String market, String clientId, String side, BigDecimal price, BigDecimal qty) {
-    WebSocketPlaceOrderRequest request = new WebSocketPlaceOrderRequest();
+    PlaceOrderParams params = new PlaceOrderParams();
+    params.instrument_name = market;
+    params.type = OrderTypeKeys._limit;
+    params.label = clientId;
+    params.price = price;
+    params.amount = qty;
+
+    WebSocketRequest<PlaceOrderParams> request = new WebSocketRequest<>();
     request.id = idGenerator.getNextRequestId(Message.class);
-    request.instrument_name = market;
-    request.type = OrderTypeKeys._limit;
-    request.label = clientId;
-    request.method = request.method + side;
-    request.price = price;
-    request.amount = qty;
+    request.method = "private/" + side;
+    request.params = params;
 
     if (session != null) {
       session.send(request);
@@ -57,13 +60,16 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
   }
 
   public int placeMarketOrder(String market, String clientId, String side, BigDecimal qty) {
-    WebSocketPlaceOrderRequest request = new WebSocketPlaceOrderRequest();
+    PlaceOrderParams params = new PlaceOrderParams();
+    params.instrument_name = market;
+    params.type = OrderTypeKeys._market;
+    params.label = clientId;
+    params.amount = qty;
+
+    WebSocketRequest<PlaceOrderParams> request = new WebSocketRequest<>();
     request.id = idGenerator.getNextRequestId(Message.class);
-    request.instrument_name = market;
-    request.type = OrderTypeKeys._market;
-    request.label = clientId;
-    request.method = request.method + side;
-    request.amount = qty;
+    request.method = "private/" + side;
+    request.params = params;
     if (session != null) {
       session.send(request);
       return request.id;
@@ -72,9 +78,12 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
   }
 
   public int cancelOrder(String market, String clientId) {
-    WebSocketCancelOrderRequest request = new WebSocketCancelOrderRequest();
-    request.label = clientId;
+    CancelOrderParams params = new CancelOrderParams();
+    params.label = clientId;
+    WebSocketRequest<CancelOrderParams> request = new WebSocketRequest<>();
     request.id = idGenerator.getNextRequestId(Message.class);
+    request.method = "private/cancel_by_label";
+    request.params = params;
 
     if (session != null) {
       session.send(request);
@@ -84,9 +93,12 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
   }
 
   public int cancelAllOrders(String market) {
-    WebSocketCancelAllOrdersRequest request = new WebSocketCancelAllOrdersRequest();
-    request.instrument_name = market;
+    CancelAllOrdersParams params = new CancelAllOrdersParams();
+    params.instrument_name = market;
+    WebSocketRequest<CancelAllOrdersParams> request = new WebSocketRequest<>();
     request.id = idGenerator.getNextRequestId(Message.class);
+    request.method = "private/cancel_all_by_instrument";
+    request.params = params;
 
     if (session != null) {
       session.send(request);

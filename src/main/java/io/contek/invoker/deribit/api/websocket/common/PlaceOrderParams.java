@@ -1,14 +1,8 @@
 package io.contek.invoker.deribit.api.websocket.common;
 
-import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
-
 import java.math.BigDecimal;
 
-public class WebSocketPlaceOrderRequest extends AnyWebSocketMessage {
-
-  public String jsonrpc = "2.0";
-  public Integer id;
-  public String method = "private/"; // + Side.toAction()
+public class PlaceOrderParams extends Params {
   public String instrument_name;
   public BigDecimal amount;
   public BigDecimal contracts;
