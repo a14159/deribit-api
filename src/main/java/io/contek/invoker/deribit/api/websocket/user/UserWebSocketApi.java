@@ -64,7 +64,7 @@ public final class UserWebSocketApi extends WebSocketApi {
     synchronized (orderEditChannel) {
       return orderEditChannel.updateAndGet(k -> {
         if (k == null) {
-          UserOrdersEditChannel rez = new UserOrdersEditChannel(new UserOrdersEditChannel.Id(""), getRequestIdGenerator());
+          UserOrdersEditChannel rez = new UserOrdersEditChannel(new UserOrdersEditChannel.Id("edit_orders"), getRequestIdGenerator());
           attach(rez);
           return rez;
         }
