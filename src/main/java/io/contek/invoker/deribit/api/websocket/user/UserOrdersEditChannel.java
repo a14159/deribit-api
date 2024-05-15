@@ -2,6 +2,7 @@ package io.contek.invoker.deribit.api.websocket.user;
 
 import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 import io.contek.invoker.commons.websocket.SubscriptionState;
+import io.contek.invoker.deribit.api.common._PlaceOrderResponse;
 import io.contek.invoker.deribit.api.common.constants.OrderTypeKeys;
 import io.contek.invoker.deribit.api.websocket.WebSocketNoSubscribeId;
 import io.contek.invoker.deribit.api.websocket.WebSocketRequestIdGenerator;
@@ -15,25 +16,25 @@ import java.math.BigDecimal;
 
 
 @ThreadSafe
-public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel<UserOrdersEditChannel.Message, String> {
+public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel<UserOrdersEditChannel.CancelResponse, String> {
 
-  private volatile WebSocketResponseListener<String> listener;
+  private volatile EditOrdersResponseListener listener;
 
   UserOrdersEditChannel(Id id, WebSocketRequestIdGenerator requestIdGenerator) {
     super(id, requestIdGenerator);
   }
 
-  public void addRawMessageListener(WebSocketResponseListener<String> listener) {
+  public void addRawMessageListener(EditOrdersResponseListener listener) {
     this.listener = listener;
   }
 
   @Override
-  public Class<Message> getMessageType() {
-    return UserOrdersEditChannel.Message.class;
+  public Class<CancelResponse> getMessageType() {
+    return CancelResponse.class;
   }
 
   @Immutable
-  public static final class Id extends WebSocketNoSubscribeId<Message> {
+  public static final class Id extends WebSocketNoSubscribeId<CancelResponse> {
     public Id(String value) {
       super(value);
     }
@@ -48,7 +49,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     params.amount = qty;
 
     WebSocketRequest<PlaceOrderParams> request = new WebSocketRequest<>();
-    request.id = idGenerator.getNextRequestId(Message.class);
+    request.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
     request.method = "private/" + side;
     request.params = params;
 
@@ -67,7 +68,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     params.amount = qty;
 
     WebSocketRequest<PlaceOrderParams> request = new WebSocketRequest<>();
-    request.id = idGenerator.getNextRequestId(Message.class);
+    request.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
     request.method = "private/" + side;
     request.params = params;
     if (session != null) {
@@ -81,7 +82,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     CancelOrderParams params = new CancelOrderParams();
     params.label = clientId;
     WebSocketRequest<CancelOrderParams> request = new WebSocketRequest<>();
-    request.id = idGenerator.getNextRequestId(Message.class);
+    request.id = idGenerator.getNextRequestId(CancelResponse.class);
     request.method = "private/cancel_by_label";
     request.params = params;
 
@@ -96,7 +97,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     CancelAllOrdersParams params = new CancelAllOrdersParams();
     params.instrument_name = market;
     WebSocketRequest<CancelAllOrdersParams> request = new WebSocketRequest<>();
-    request.id = idGenerator.getNextRequestId(Message.class);
+    request.id = idGenerator.getNextRequestId(CancelResponse.class);
     request.method = "private/cancel_all_by_instrument";
     request.params = params;
 
@@ -110,12 +111,16 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
   @Nullable
   @Override
   protected SubscriptionState getState(AnyWebSocketMessage anyWebSocketMessage) {
-    if (listener != null && anyWebSocketMessage instanceof Message msg) {
+    if (listener != null && anyWebSocketMessage instanceof EditOrderResponse msg) {
       listener.onNextRawMessage(msg);
     }
     return null;
   }
 
+  public interface EditOrderResponse {}
+
   @NotThreadSafe
-  public static final class Message extends WebSocketResponse<String> {}
+  public static final class CancelResponse extends WebSocketResponse<String> implements EditOrderResponse {}
+
+  public static final class PlaceOrderResponse extends WebSocketResponse<_PlaceOrderResponse> implements EditOrderResponse {}
 }
