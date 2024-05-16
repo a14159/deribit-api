@@ -16,7 +16,7 @@ public class _Ticker {
   public Double index_price;
   public String instrument_name;
   public Double interest_rate;
-  public Double last_price;
+  public BigDecimal last_price;
   public Double mark_price;
   public Double max_price;
   public Double min_price;
