@@ -47,4 +47,5 @@ public class _AccountSummary {
   public BigDecimal balance;
   public Double projected_initial_margin;
   public String deposit_address;
+  public BigDecimal total_equity_usd;
 }
