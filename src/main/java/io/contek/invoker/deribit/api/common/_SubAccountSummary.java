@@ -2,6 +2,7 @@ package io.contek.invoker.deribit.api.common;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public class _SubAccountSummary {
     public String email;
@@ -10,7 +11,7 @@ public class _SubAccountSummary {
     public String type;
     public String username;
     public String system_name;
-    public List<_PortfolioPosition> portfolio;
+    public Map<String, _PortfolioPosition> portfolio;
 
     public static class _PortfolioPosition {
         public String currency;

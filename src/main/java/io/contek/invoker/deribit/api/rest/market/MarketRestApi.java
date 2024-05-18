@@ -43,4 +43,8 @@ public final class MarketRestApi {
   public GetFundingRate getFundingRate() {
     return new GetFundingRate(actor, context);
   }
+
+  public GetIndexPrice getIndexPrice() {
+    return new GetIndexPrice(actor, context);
+  }
 }
