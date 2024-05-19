@@ -1,7 +1,6 @@
 package io.contek.invoker.deribit.api.common;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
 
 public class _SubAccountSummary {

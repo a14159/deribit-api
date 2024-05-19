@@ -9,7 +9,6 @@ import io.contek.invoker.deribit.api.common._IndexPrice;
 import io.contek.invoker.deribit.api.rest.common.RestResponse;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import java.math.BigDecimal;
 
 import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.ONE_IP_NON_MATCHING_ENGINE_REQUEST;
 import static java.util.Objects.requireNonNull;

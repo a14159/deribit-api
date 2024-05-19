@@ -1,7 +1,6 @@
 package io.contek.invoker.deribit.api.common;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class _IndexPrice {
 
