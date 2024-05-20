@@ -17,9 +17,12 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
 
     private static final Logger log = getLogger(WebSocketLiveKeeper.class);
 
+    private static final int HEARTBEAT_FREQ = 30; // seconds
+
     private final WebSocketRequestIdGenerator requestIdGenerator;
     private volatile int heartbeats = 0;
     private volatile int testResponses = 0;
+    private volatile long lastHeartbeat = 0;
     private final AtomicBoolean initialized = new AtomicBoolean(false);
 
     WebSocketLiveKeeper(WebSocketRequestIdGenerator requestIdGenerator) {
@@ -32,13 +35,19 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
             if (!initialized.get()) {
                 log.debug("Sending set heartbeat request");
                 HeartbeatParams params = new HeartbeatParams();
+                params.interval = HEARTBEAT_FREQ;
                 WebSocketRequest<HeartbeatParams> request = new WebSocketRequest<>();
                 request.id = requestIdGenerator.getNextRequestId(HeartbeatResponse.class);
                 request.method = "public/set_heartbeat";
                 request.params = params;
                 session.send(request);
                 initialized.set(true);
+                lastHeartbeat = System.currentTimeMillis();
             }
+        }
+        if (System.currentTimeMillis() - lastHeartbeat > HEARTBEAT_FREQ * 1000L) {
+            log.warn("No heartbeats for the last {} seconds, resetting connection", 2 * HEARTBEAT_FREQ);
+            throw new WebSocketSessionInactiveException();
         }
     }
 
@@ -46,6 +55,7 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
     public void onMessage(AnyWebSocketMessage message, WebSocketSession session) {
         if (message instanceof WebSocketHeartbeat) {
             heartbeats++;
+            lastHeartbeat = System.currentTimeMillis();
             log.debug("Received heartbeat message #{}", heartbeats);
             WebSocketTestRequest request = new WebSocketTestRequest();
             request.id = requestIdGenerator.getNextRequestId(WebSocketTestResponse.class);
