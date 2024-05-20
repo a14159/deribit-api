@@ -17,7 +17,7 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
 
     private static final Logger log = getLogger(WebSocketLiveKeeper.class);
 
-    private static final int HEARTBEAT_FREQ = 30; // seconds
+    private static final int HEARTBEAT_FREQ = 15; // seconds
 
     private final WebSocketRequestIdGenerator requestIdGenerator;
     private volatile int heartbeats = 0;
@@ -45,7 +45,7 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
                 lastHeartbeat = System.currentTimeMillis();
             }
         }
-        if (System.currentTimeMillis() - lastHeartbeat > HEARTBEAT_FREQ * 1000L) {
+        if (System.currentTimeMillis() - lastHeartbeat > 2 * HEARTBEAT_FREQ * 1000L) {
             log.warn("No heartbeats for the last {} seconds, resetting connection", 2 * HEARTBEAT_FREQ);
             throw new WebSocketSessionInactiveException();
         }
