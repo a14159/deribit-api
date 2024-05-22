@@ -4,19 +4,25 @@ import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 import io.contek.invoker.commons.websocket.SubscriptionState;
 import io.contek.invoker.deribit.api.common._PlaceOrderResponse;
 import io.contek.invoker.deribit.api.common.constants.OrderTypeKeys;
+import io.contek.invoker.deribit.api.websocket.WebSocketLiveKeeper;
 import io.contek.invoker.deribit.api.websocket.WebSocketNoSubscribeId;
 import io.contek.invoker.deribit.api.websocket.WebSocketRequestIdGenerator;
 import io.contek.invoker.deribit.api.websocket.common.*;
-import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;
 import java.math.BigDecimal;
 
+import static io.contek.invoker.commons.websocket.SubscriptionState.*;
+import static org.slf4j.LoggerFactory.getLogger;
+
 
 @ThreadSafe
 public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel<UserOrdersEditChannel.CancelResponse, String> {
+
+  private static final Logger log = getLogger(UserOrdersEditChannel.class);
 
   private volatile EditOrdersResponseListener listener;
 
@@ -56,7 +62,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     if (session != null) {
       session.send(request);
       return request.id;
-    }
+    } else log.warn("Trying to place an order but we don't have the session");
     return -1;
   }
 
@@ -74,7 +80,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     if (session != null) {
       session.send(request);
       return request.id;
-    }
+    } else log.warn("Trying to place an order but we don't have the session");
     return -1;
   }
 
@@ -89,7 +95,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     if (session != null) {
       session.send(request);
       return request.id;
-    }
+    } else log.warn("Trying to cancel an order but we don't have the session");
     return -1;
   }
 
@@ -104,15 +110,25 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     if (session != null) {
       session.send(request);
       return request.id;
-    }
+    } else log.warn("Trying to cancel all orders but we don't have the session");
     return -1;
   }
 
-  @Nullable
   @Override
   protected SubscriptionState getState(AnyWebSocketMessage anyWebSocketMessage) {
     if (listener != null && anyWebSocketMessage instanceof EditOrderResponse msg) {
       listener.onNextRawMessage(msg);
+    }
+//    if (anyWebSocketMessage instanceof WebSocketLiveKeeper.HeartbeatResponse) {
+//      System.out.println("UserEditChannel received heartbeat request confirmation");
+//    }
+    if (lastStatusSent == SUBSCRIBING) {
+      lastStatusSent = SUBSCRIBED;
+      return SubscriptionState.SUBSCRIBED;
+    }
+    if (lastStatusSent == UNSUBSCRIBING) {
+      lastStatusSent = UNSUBSCRIBED;
+      return SubscriptionState.SUBSCRIBED;
     }
     return null;
   }

@@ -44,8 +44,9 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
                 initialized.set(true);
                 lastHeartbeat = System.currentTimeMillis();
             } else {
-                if (System.currentTimeMillis() - lastHeartbeat > 2 * HEARTBEAT_FREQ * 1000L) {
-                    log.warn("No heartbeats for the last {} seconds, resetting connection", 2 * HEARTBEAT_FREQ);
+                if (System.currentTimeMillis() - lastHeartbeat > 5 * HEARTBEAT_FREQ * 1000L / 2) {
+                    log.warn("No heartbeats for the last {} seconds, resetting connection", 5 * HEARTBEAT_FREQ / 2);
+                    initialized.set(false);
                     throw new WebSocketSessionInactiveException();
                 }
             }
@@ -54,19 +55,20 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
 
     @Override
     public void onMessage(AnyWebSocketMessage message, WebSocketSession session) {
-        if (message instanceof WebSocketHeartbeat) {
+        lastHeartbeat = System.currentTimeMillis();
+//        log.debug("received message: {}", message.getClass());
+        if (message instanceof WebSocketHeartbeat) { // server is requesting us to send a test request
             heartbeats++;
-            lastHeartbeat = System.currentTimeMillis();
-            log.debug("Received heartbeat message #{}", heartbeats);
+            log.debug("Received heartbeat message #{} (and sending a test request)", heartbeats);
             WebSocketTestRequest request = new WebSocketTestRequest();
             request.id = requestIdGenerator.getNextRequestId(WebSocketTestResponse.class);
             session.send(request);
         }
-        if (message instanceof WebSocketTestResponse) {
+        if (message instanceof WebSocketTestResponse) { // received a response to our last test request
             testResponses++;
             log.debug("Received test response message #{}", testResponses);
         }
-        if (message instanceof HeartbeatResponse hb) {
+        if (message instanceof HeartbeatResponse hb) { // confirmation for our set heartbeat
             log.debug("Receiving set heartbeat response: {}", hb.result);
         }
     }
