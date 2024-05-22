@@ -4,7 +4,6 @@ import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 import io.contek.invoker.commons.websocket.SubscriptionState;
 import io.contek.invoker.deribit.api.common._PlaceOrderResponse;
 import io.contek.invoker.deribit.api.common.constants.OrderTypeKeys;
-import io.contek.invoker.deribit.api.websocket.WebSocketLiveKeeper;
 import io.contek.invoker.deribit.api.websocket.WebSocketNoSubscribeId;
 import io.contek.invoker.deribit.api.websocket.WebSocketRequestIdGenerator;
 import io.contek.invoker.deribit.api.websocket.common.*;
@@ -119,9 +118,6 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     if (listener != null && anyWebSocketMessage instanceof EditOrderResponse msg) {
       listener.onNextRawMessage(msg);
     }
-//    if (anyWebSocketMessage instanceof WebSocketLiveKeeper.HeartbeatResponse) {
-//      System.out.println("UserEditChannel received heartbeat request confirmation");
-//    }
     if (lastStatusSent == SUBSCRIBING) {
       lastStatusSent = SUBSCRIBED;
       return SubscriptionState.SUBSCRIBED;

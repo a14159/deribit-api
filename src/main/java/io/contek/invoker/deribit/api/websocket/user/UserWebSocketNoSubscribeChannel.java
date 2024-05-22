@@ -6,10 +6,13 @@ import io.contek.invoker.commons.websocket.WebSocketSession;
 import io.contek.invoker.deribit.api.websocket.WebSocketNoSubscribeId;
 import io.contek.invoker.deribit.api.websocket.WebSocketRequestIdGenerator;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketResponse;
+import io.contek.invoker.deribit.api.websocket.common.WebSocketTestRequest;
+import io.contek.invoker.deribit.api.websocket.common.WebSocketTestResponse;
 
 import javax.annotation.concurrent.ThreadSafe;
 
-import static io.contek.invoker.commons.websocket.SubscriptionState.*;
+import static io.contek.invoker.commons.websocket.SubscriptionState.SUBSCRIBING;
+import static io.contek.invoker.commons.websocket.SubscriptionState.UNSUBSCRIBING;
 
 @ThreadSafe
 public abstract class UserWebSocketNoSubscribeChannel<Message extends WebSocketResponse<Data>, Data>
@@ -35,6 +38,10 @@ public abstract class UserWebSocketNoSubscribeChannel<Message extends WebSocketR
   protected SubscriptionState subscribe(WebSocketSession webSocketSession) {
 //    System.out.println("[UserWebSocketNoSubscribeChannel] SUBSCRIBE was called");
     this.session = webSocketSession;
+    // send test request to move to subscribed state faster
+    WebSocketTestRequest request = new WebSocketTestRequest();
+    request.id = idGenerator.getNextRequestId(WebSocketTestResponse.class);
+    session.send(request);
     lastStatusSent = SUBSCRIBING;
     return SUBSCRIBING;
   }
