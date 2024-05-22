@@ -3,6 +3,8 @@ package io.contek.invoker.deribit.api.common;
 import javax.annotation.concurrent.NotThreadSafe;
 import java.math.BigDecimal;
 
+import static java.math.BigDecimal.ZERO;
+
 @NotThreadSafe
 public class _Position {
 
@@ -30,4 +32,10 @@ public class _Position {
   public BigDecimal theta;
   public BigDecimal total_profit_loss;
   public BigDecimal vega;
+
+  public BigDecimal getSizeCurrency() {
+    if (size_currency != null)
+      return new BigDecimal(size_currency);
+    return ZERO;
+  }
 }
