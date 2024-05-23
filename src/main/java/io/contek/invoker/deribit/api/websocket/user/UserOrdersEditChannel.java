@@ -46,6 +46,10 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
   }
 
   public int placeLimitOrder(String market, String clientId, String side, BigDecimal price, BigDecimal qty) {
+    if (session == null) {
+      log.warn("Trying to place an order but we don't have the session");
+      return -1;
+    }
     PlaceOrderParams params = new PlaceOrderParams();
     params.instrument_name = market;
     params.type = OrderTypeKeys._limit;
@@ -58,14 +62,15 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     request.method = "private/" + side;
     request.params = params;
 
-    if (session != null) {
-      session.send(request);
-      return request.id;
-    } else log.warn("Trying to place an order but we don't have the session");
-    return -1;
+    session.send(request);
+    return request.id;
   }
 
   public int placeMarketOrder(String market, String clientId, String side, BigDecimal qty) {
+    if (session == null) {
+      log.warn("Trying to place an order but we don't have the session");
+      return -1;
+    }
     PlaceOrderParams params = new PlaceOrderParams();
     params.instrument_name = market;
     params.type = OrderTypeKeys._market;
@@ -76,14 +81,16 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     request.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
     request.method = "private/" + side;
     request.params = params;
-    if (session != null) {
-      session.send(request);
-      return request.id;
-    } else log.warn("Trying to place an order but we don't have the session");
-    return -1;
+
+    session.send(request);
+    return request.id;
   }
 
   public int cancelOrder(String market, String clientId) {
+    if (session == null) {
+      log.warn("Trying to cancel an order but we don't have the session");
+      return -1;
+    }
     CancelOrderParams params = new CancelOrderParams();
     params.label = clientId;
     WebSocketRequest<CancelOrderParams> request = new WebSocketRequest<>();
@@ -91,14 +98,15 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     request.method = "private/cancel_by_label";
     request.params = params;
 
-    if (session != null) {
-      session.send(request);
-      return request.id;
-    } else log.warn("Trying to cancel an order but we don't have the session");
-    return -1;
+    session.send(request);
+    return request.id;
   }
 
   public int cancelAllOrders(String market) {
+    if (session == null) {
+      log.warn("Trying to cancel all orders but we don't have the session");
+      return -1;
+    }
     CancelAllOrdersParams params = new CancelAllOrdersParams();
     params.instrument_name = market;
     WebSocketRequest<CancelAllOrdersParams> request = new WebSocketRequest<>();
@@ -106,11 +114,8 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     request.method = "private/cancel_all_by_instrument";
     request.params = params;
 
-    if (session != null) {
-      session.send(request);
-      return request.id;
-    } else log.warn("Trying to cancel all orders but we don't have the session");
-    return -1;
+    session.send(request);
+    return request.id;
   }
 
   @Override
