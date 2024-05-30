@@ -47,7 +47,7 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
                 if (System.currentTimeMillis() - lastHeartbeat > 2 * HEARTBEAT_FREQ * 1000L) {
                     log.warn("No heartbeats for the last {} seconds, resetting connection", 5 * HEARTBEAT_FREQ / 2);
                     initialized.set(false);
-                    throw new WebSocketSessionInactiveException();
+                    throw new WebSocketSessionInactiveException("no heartbeats from server");
                 }
             }
         }
