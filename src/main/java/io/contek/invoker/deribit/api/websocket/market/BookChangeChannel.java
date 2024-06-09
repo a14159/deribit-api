@@ -47,12 +47,12 @@ public final class BookChangeChannel
     public String type;
     public long timestamp;
     public String instrument_name;
-    public Long prev_change_id;
+    public Long prev_change_id; // missing for the first message
     public long change_id;
     public List<LevelUpdate> bids;
     public List<LevelUpdate> asks;
   }
 
   @NotThreadSafe
-  public static final class LevelUpdate extends ArrayList<String> {}
+  public static final class LevelUpdate extends ArrayList<String> {} // action, price, amount
 }
