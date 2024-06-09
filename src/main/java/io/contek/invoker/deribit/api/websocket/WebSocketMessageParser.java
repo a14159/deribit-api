@@ -10,7 +10,7 @@ import io.contek.invoker.deribit.api.websocket.common.WebSocketHeartbeat;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketInboundMessage;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketResponse;
 import io.contek.invoker.deribit.api.websocket.common.constants.WebSocketChannelKeys;
-import io.contek.invoker.deribit.api.websocket.market.BookChangeChannel;
+import io.contek.invoker.deribit.api.websocket.user.UserBookChangeChannel;
 import io.contek.invoker.deribit.api.websocket.market.BookSnapshotChannel;
 import io.contek.invoker.deribit.api.websocket.market.TradesChannel;
 import io.contek.invoker.deribit.api.websocket.user.UserChangesChannel;
@@ -73,7 +73,7 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
     if (channel.startsWith(WebSocketChannelKeys._book)) {
       JsonObject data = params.getAsJsonObject("data");
       if (data.has("type")) {
-        return gson.fromJson(obj, BookChangeChannel.Message.class);
+        return gson.fromJson(obj, UserBookChangeChannel.Message.class);
       }
       return gson.fromJson(obj, BookSnapshotChannel.Message.class);
     }

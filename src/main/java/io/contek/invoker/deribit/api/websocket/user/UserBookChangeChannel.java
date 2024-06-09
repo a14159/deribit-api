@@ -1,4 +1,4 @@
-package io.contek.invoker.deribit.api.websocket.market;
+package io.contek.invoker.deribit.api.websocket.user;
 
 import io.contek.invoker.deribit.api.websocket.WebSocketChannelId;
 import io.contek.invoker.deribit.api.websocket.WebSocketRequestIdGenerator;
@@ -14,16 +14,16 @@ import static io.contek.invoker.deribit.api.websocket.common.constants.WebSocket
 import static java.lang.String.format;
 
 @ThreadSafe
-public final class BookChangeChannel
-    extends MarketWebSocketChannel<BookChangeChannel.Message, BookChangeChannel.Data> {
+public final class UserBookChangeChannel
+    extends UserWebSocketChannel<UserBookChangeChannel.Message, UserBookChangeChannel.Data> {
 
-  BookChangeChannel(Id id, WebSocketRequestIdGenerator requestIdGenerator) {
+  UserBookChangeChannel(Id id, WebSocketRequestIdGenerator requestIdGenerator) {
     super(id, requestIdGenerator);
   }
 
   @Override
-  public Class<BookChangeChannel.Message> getMessageType() {
-    return BookChangeChannel.Message.class;
+  public Class<UserBookChangeChannel.Message> getMessageType() {
+    return UserBookChangeChannel.Message.class;
   }
 
   @Immutable

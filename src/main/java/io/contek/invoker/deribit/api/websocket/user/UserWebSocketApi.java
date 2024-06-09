@@ -13,10 +13,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class UserWebSocketApi extends WebSocketApi {
 
   private final Map<UserOrdersChannel.Id, UserOrdersChannel> userOrdersChannels = new HashMap<>();
-  private final Map<UserChangesChannel.Id, UserChangesChannel> userChangesChannels =
-      new HashMap<>();
+  private final Map<UserChangesChannel.Id, UserChangesChannel> userChangesChannels = new HashMap<>();
   private final Map<UserTradesChannel.Id, UserTradesChannel> userTradesChannels = new HashMap<>();
   private final Map<UserTickersChannel.Id, UserTickersChannel> userTickersChannels = new HashMap<>();
+  private final Map<UserBookChangeChannel.Id, UserBookChangeChannel> bookChangeChannels = new HashMap<>();
 
   private final AtomicReference<UserOrdersEditChannel> orderEditChannel = new AtomicReference<>();
 
@@ -46,6 +46,18 @@ public final class UserWebSocketApi extends WebSocketApi {
 
   public UserTradesChannel getUserTradesChannel(String instrumentName, String interval) {
     return getUserTradesChannel(UserTradesChannel.Id.of(instrumentName, interval));
+  }
+
+  public UserBookChangeChannel getBookChangeChannel(String instrumentName, String interval) {
+    synchronized (bookChangeChannels) {
+      return bookChangeChannels.computeIfAbsent(
+        UserBookChangeChannel.Id.of(instrumentName, interval),
+          k -> {
+            UserBookChangeChannel result = new UserBookChangeChannel(k, getRequestIdGenerator());
+            attach(result);
+            return result;
+          });
+    }
   }
 
   public UserTickersChannel getUserTickersChannel(String instrument, String interval) {
