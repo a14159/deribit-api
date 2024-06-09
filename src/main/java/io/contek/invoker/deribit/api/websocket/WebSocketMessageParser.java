@@ -10,13 +10,9 @@ import io.contek.invoker.deribit.api.websocket.common.WebSocketHeartbeat;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketInboundMessage;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketResponse;
 import io.contek.invoker.deribit.api.websocket.common.constants.WebSocketChannelKeys;
-import io.contek.invoker.deribit.api.websocket.user.UserBookChangeChannel;
 import io.contek.invoker.deribit.api.websocket.market.BookSnapshotChannel;
 import io.contek.invoker.deribit.api.websocket.market.TradesChannel;
-import io.contek.invoker.deribit.api.websocket.user.UserChangesChannel;
-import io.contek.invoker.deribit.api.websocket.user.UserOrdersChannel;
-import io.contek.invoker.deribit.api.websocket.user.UserTickersChannel;
-import io.contek.invoker.deribit.api.websocket.user.UserTradesChannel;
+import io.contek.invoker.deribit.api.websocket.user.*;
 
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.Map;

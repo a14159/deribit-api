@@ -3,7 +3,6 @@ package io.contek.invoker.deribit.api.websocket.market;
 import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.websocket.WebSocketContext;
 import io.contek.invoker.deribit.api.websocket.WebSocketApi;
-import io.contek.invoker.deribit.api.websocket.user.UserBookChangeChannel;
 
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.HashMap;
