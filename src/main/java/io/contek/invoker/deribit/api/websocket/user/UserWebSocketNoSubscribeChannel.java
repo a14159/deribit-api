@@ -58,4 +58,9 @@ public abstract class UserWebSocketNoSubscribeChannel<Message extends WebSocketR
 //    System.out.println("[UserWebSocketNoSubscribeChannel] RESET was called");
     session = null;
   }
+
+  @Override
+  public String toString() {
+    return getId().toString();
+  }
 }

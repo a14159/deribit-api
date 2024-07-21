@@ -16,4 +16,9 @@ public abstract class UserWebSocketChannel<
       WebSocketChannelId<Message> id, WebSocketRequestIdGenerator requestIdGenerator) {
     super(id, "private", requestIdGenerator);
   }
+
+  @Override
+  public String toString() {
+    return getId().toString();
+  }
 }

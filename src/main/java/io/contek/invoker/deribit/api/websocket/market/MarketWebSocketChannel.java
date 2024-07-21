@@ -16,4 +16,9 @@ public abstract class MarketWebSocketChannel<
       WebSocketChannelId<Message> id, WebSocketRequestIdGenerator requestIdGenerator) {
     super(id, "public", requestIdGenerator);
   }
+
+  @Override
+  public String toString() {
+    return getId().toString();
+  }
 }
