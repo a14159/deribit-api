@@ -71,7 +71,7 @@ final class WebSocketAuthenticator implements IWebSocketAuthenticator {
     request.method = "public/auth";
     request.params = params;
 
-    log.info("Requesting authentication for {}.", credential.getApiKeyId());
+    log.debug("Requesting authentication for {}.", credential.getApiKeyId());
     session.send(request);
     pendingRequestHolder.set(request);
   }
@@ -112,7 +112,7 @@ final class WebSocketAuthenticator implements IWebSocketAuthenticator {
     }
 
     authenticated.set(true);
-    log.info("Authentication for {} completed.", credential.getApiKeyId());
+    log.debug("Authentication for {} completed.", credential.getApiKeyId());
   }
 
   @Override
