@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 public final class GetAccountSummary extends UserRestRequest<GetAccountSummary.Response> {
 
   private String currency;
+  private String subaccount_id;
   private Boolean extended;
 
   GetAccountSummary(IActor actor, RestContext context) {
@@ -32,6 +33,11 @@ public final class GetAccountSummary extends UserRestRequest<GetAccountSummary.R
 
   public GetAccountSummary setExtended(boolean extended) {
     this.extended = extended;
+    return this;
+  }
+
+  public GetAccountSummary setSubAccount(String subaccount_id) {
+    this.subaccount_id = subaccount_id;
     return this;
   }
 
@@ -51,6 +57,10 @@ public final class GetAccountSummary extends UserRestRequest<GetAccountSummary.R
 
     requireNonNull(currency);
     builder.add("currency", currency);
+
+    if (subaccount_id != null) {
+      builder.add("subaccount_id", subaccount_id);
+    }
 
     if (extended != null) {
       builder.add("extended", extended);
