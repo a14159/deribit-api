@@ -6,8 +6,6 @@ import javax.annotation.concurrent.NotThreadSafe;
 public class _Limits {
 
   public _Limit non_matching_engine;
-  public _Limit matching_engine;
-  public _Limit futures;
-  public _Limit options;
-  public _Limit perpetuals;
+  public _MatchingEngineLimits matching_engine;
+  public boolean limits_per_currency;
 }
