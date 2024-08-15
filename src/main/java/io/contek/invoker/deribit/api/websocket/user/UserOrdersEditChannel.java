@@ -86,7 +86,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     return request.id;
   }
 
-  public int cancelOrder(String market, String clientId) {
+  public int cancelOrder(String clientId) {
     if (session == null) {
       log.warn("Trying to cancel an order but we don't have the session");
       return -1;
