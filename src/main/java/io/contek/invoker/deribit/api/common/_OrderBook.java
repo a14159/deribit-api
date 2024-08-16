@@ -33,4 +33,5 @@ public class _OrderBook {
   public Long timestamp;
   public Double underlying_index;
   public Double underlying_price;
+  public long traceNano = System.nanoTime();
 }

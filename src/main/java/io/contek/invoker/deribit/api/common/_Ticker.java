@@ -25,4 +25,5 @@ public class _Ticker {
   public String state;
   public _Stats stats;
   public Long timestamp;
+  public long traceNano = System.nanoTime();
 }

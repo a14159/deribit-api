@@ -35,4 +35,5 @@ public class _UserTrade {
   public Double stop_price;
   public String trigger;
   public Boolean mmp;
+  public long traceNano = System.nanoTime();
 }
