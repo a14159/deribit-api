@@ -43,6 +43,12 @@ public final class ApiFactory {
                   .setWebSocketContext(WebSocketContext.forBaseUrl("wss://gateway.deribit.com"))
                   .build();
 
+  public static final ApiContext CROSS_CONTEXT =
+          ApiContext.newBuilder()
+                  .setRestContext(RestContext.forBaseUrl("https://193.58.254.1"))
+                  .setWebSocketContext(WebSocketContext.forBaseUrl("ws://193.58.254.1:8022"))
+                  .build();
+
   public static final ApiContext TEST_NET_CONTEXT =
       ApiContext.newBuilder()
           .setRestContext(RestContext.forBaseUrl("https://test.deribit.com"))
@@ -63,6 +69,10 @@ public final class ApiFactory {
 
   public static ApiFactory getGatewayNet() {
     return fromContext(GATEWAY_CONTEXT);
+  }
+
+  public static ApiFactory getDirectNet() {
+    return fromContext(CROSS_CONTEXT);
   }
 
   public static ApiFactory getTestNet() {
