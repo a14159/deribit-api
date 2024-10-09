@@ -33,20 +33,31 @@ public final class ApiFactory {
 
   public static final ApiContext MAIN_NET_CONTEXT =
       ApiContext.newBuilder()
-          .setRestContext(RestContext.forBaseUrl("https://www.deribit.com"))
-          .setWebSocketContext(WebSocketContext.forBaseUrl("wss://www.deribit.com"))
-          .build();
+                .setRestContext(RestContext.newBuilder().setBaseUrl("https://www.deribit.com")
+                        .setConnectionTimeout(Duration.ofMillis(2000))
+                        .setReadTimeout(Duration.ofMillis(1000))
+                        .setWriteTimeout(Duration.ofMillis(1000)))
+                .setWebSocketContext(WebSocketContext.forBaseUrl("wss://www.deribit.com", Duration.ofMillis(0)))
+                .build();
 
   public static final ApiContext GATEWAY_CONTEXT =
           ApiContext.newBuilder()
-                  .setRestContext(RestContext.forBaseUrl("https://gateway.deribit.com"))
-                  .setWebSocketContext(WebSocketContext.forBaseUrl("wss://gateway.deribit.com"))
+                  .setRestContext(RestContext.newBuilder().setBaseUrl("https://gateway.deribit.com")
+                          .setConnectionTimeout(Duration.ofMillis(1000))
+                          .setReadTimeout(Duration.ofMillis(500))
+                          .setWriteTimeout(Duration.ofMillis(500))
+                  )
+                  .setWebSocketContext(WebSocketContext.forBaseUrl("wss://gateway.deribit.com", Duration.ofMillis(0)))
                   .build();
 
   public static final ApiContext CROSS_CONTEXT =
           ApiContext.newBuilder()
-                  .setRestContext(RestContext.forBaseUrl("https://193.58.254.1"))
-                  .setWebSocketContext(WebSocketContext.forBaseUrl("ws://193.58.254.1:8022"))
+                  .setRestContext(RestContext.newBuilder().setBaseUrl("https://193.58.254.1")
+                          .setConnectionTimeout(Duration.ofMillis(1000))
+                          .setReadTimeout(Duration.ofMillis(500))
+                          .setWriteTimeout(Duration.ofMillis(500))
+                  )
+                  .setWebSocketContext(WebSocketContext.forBaseUrl("ws://193.58.254.1:8022", Duration.ofMillis(0)))
                   .build();
 
   public static final ApiContext TEST_NET_CONTEXT =
