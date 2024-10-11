@@ -17,6 +17,7 @@ import static java.util.Objects.requireNonNull;
 @NotThreadSafe
 public final class GetCancelByLabel extends UserRestRequest<GetCancelByLabel.Response> {
   private String label;
+  private String currency;
 
   GetCancelByLabel(IActor actor, RestContext context) {
     super(actor, context);
@@ -24,6 +25,11 @@ public final class GetCancelByLabel extends UserRestRequest<GetCancelByLabel.Res
 
   public GetCancelByLabel setLabel(String label) {
     this.label = label;
+    return this;
+  }
+
+  public GetCancelByLabel setCurrency(String currency) {
+    this.currency = currency;
     return this;
   }
 
@@ -48,6 +54,8 @@ public final class GetCancelByLabel extends UserRestRequest<GetCancelByLabel.Res
 
     requireNonNull(label);
     builder.add("label", label);
+    if (currency != null)
+      builder.add("currency", currency);
 
     return builder.build();
   }
