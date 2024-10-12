@@ -86,13 +86,14 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     return request.id;
   }
 
-  public int cancelOrder(String clientId) {
+  public int cancelOrder(String clientId, String currency) {
     if (session == null) {
       log.warn("Trying to cancel an order but we don't have the session");
       return -1;
     }
     CancelOrderParams params = new CancelOrderParams();
     params.label = clientId;
+    params.currency = currency;
     WebSocketRequest<CancelOrderParams> request = new WebSocketRequest<>();
     request.id = idGenerator.getNextRequestId(CancelResponse.class);
     request.method = "private/cancel_by_label";
