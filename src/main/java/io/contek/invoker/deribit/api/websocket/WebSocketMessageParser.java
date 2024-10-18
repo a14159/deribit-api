@@ -1,8 +1,7 @@
 package io.contek.invoker.deribit.api.websocket;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 import io.contek.invoker.commons.websocket.IWebSocketComponent;
 import io.contek.invoker.commons.websocket.WebSocketTextMessageParser;
@@ -22,8 +21,6 @@ import static java.lang.String.format;
 @ThreadSafe
 final class WebSocketMessageParser extends WebSocketTextMessageParser {
 
-  private final Gson gson = new Gson();
-
   private final Map<Integer, Class<? extends WebSocketResponse<?>>> pendingRequests =
       new ExpiringMap<>(100);
 
@@ -38,15 +35,11 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
 
   @Override
   protected AnyWebSocketMessage fromText(String text) {
-    JsonElement json = gson.fromJson(text, JsonElement.class);
-    if (!json.isJsonObject()) {
-      throw new IllegalArgumentException(text);
-    }
-    JsonObject obj = json.getAsJsonObject();
-    if (obj.has("id")) {
+    JSONObject obj = JSON.parseObject(text);
+    if (obj.containsKey("id")) {
       return toResponseMessage(obj);
-    } else if (obj.has("params")) {
-      if (obj.has("method") && obj.get("method").getAsString().equals("heartbeat"))
+    } else if (obj.containsKey("params")) {
+      if (obj.containsKey("method") && obj.get("method").toString().equals("heartbeat"))
         return new WebSocketHeartbeat();
       return toDataMessage(obj);
     } else {
@@ -54,39 +47,39 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
     }
   }
 
-  private WebSocketResponse<?> toResponseMessage(JsonObject obj) {
-    int id = obj.get("id").getAsInt();
+  private WebSocketResponse<?> toResponseMessage(JSONObject obj) {
+    int id = Integer.parseInt(obj.get("id").toString());
     Class<? extends WebSocketResponse<?>> type = pendingRequests.remove(id);
     if (type == null) {
       throw new IllegalStateException(format("Expected response type not found: %d", id));
     }
-    return gson.fromJson(obj, type);
+    return obj.toJavaObject(type);
   }
 
-  private WebSocketInboundMessage toDataMessage(JsonObject obj) {
-    JsonObject params = obj.getAsJsonObject("params");
-    String channel = params.get("channel").getAsString();
+  private WebSocketInboundMessage toDataMessage(JSONObject obj) {
+    JSONObject params = obj.getJSONObject("params");
+    String channel = params.get("channel").toString();
     if (channel.startsWith(WebSocketChannelKeys._book)) {
-      JsonObject data = params.getAsJsonObject("data");
-      if (data.has("type")) {
-        return gson.fromJson(obj, UserBookChangeChannel.Message.class);
+      JSONObject data = params.getJSONObject("data");
+      if (data.containsKey("type")) {
+        return obj.toJavaObject(UserBookChangeChannel.Message.class);
       }
-      return gson.fromJson(obj, BookSnapshotChannel.Message.class);
+      return obj.toJavaObject(BookSnapshotChannel.Message.class);
     }
     if (channel.startsWith(WebSocketChannelKeys._trades)) {
-      return gson.fromJson(obj, TradesChannel.Message.class);
+      return obj.toJavaObject(TradesChannel.Message.class);
     }
     if (channel.startsWith(WebSocketChannelKeys._user_changes)) {
-      return gson.fromJson(obj, UserChangesChannel.Message.class);
+      return obj.toJavaObject(UserChangesChannel.Message.class);
     }
     if (channel.startsWith(WebSocketChannelKeys._user_orders)) {
-      return gson.fromJson(obj, UserOrdersChannel.Message.class);
+      return obj.toJavaObject(UserOrdersChannel.Message.class);
     }
     if (channel.startsWith(WebSocketChannelKeys._user_trades)) {
-      return gson.fromJson(obj, UserTradesChannel.Message.class);
+      return obj.toJavaObject(UserTradesChannel.Message.class);
     }
     if (channel.startsWith(WebSocketChannelKeys._tickers)) {
-      return gson.fromJson(obj, UserTickersChannel.Message.class);
+      return obj.toJavaObject(UserTickersChannel.Message.class);
     } else {
       throw new IllegalArgumentException(obj.toString());
     }
