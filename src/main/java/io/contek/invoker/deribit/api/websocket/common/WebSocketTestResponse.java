@@ -1,6 +1,6 @@
 package io.contek.invoker.deribit.api.websocket.common;
 
-public class WebSocketTestResponse extends WebSocketResponse <WebSocketTestResponse.Result>{
+public class WebSocketTestResponse extends WebSocketResponse<WebSocketTestResponse.Result> {
 
     // {
     //  "jsonrpc": "2.0",

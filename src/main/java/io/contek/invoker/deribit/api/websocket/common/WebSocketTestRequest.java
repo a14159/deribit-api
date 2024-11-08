@@ -4,6 +4,6 @@ import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 
 public class WebSocketTestRequest extends AnyWebSocketMessage {
     public String jsonrpc = "2.0";
-    public Integer id;
+    public int id;
     public String method = "public/test";
 }
