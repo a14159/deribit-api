@@ -7,7 +7,8 @@ import io.contek.invoker.deribit.api.common.constants.OrderTypeKeys;
 import io.contek.invoker.deribit.api.websocket.WebSocketNoSubscribeId;
 import io.contek.invoker.deribit.api.websocket.WebSocketRequestIdGenerator;
 import io.contek.invoker.deribit.api.websocket.common.*;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
@@ -15,13 +16,12 @@ import javax.annotation.concurrent.ThreadSafe;
 import java.math.BigDecimal;
 
 import static io.contek.invoker.commons.websocket.SubscriptionState.*;
-import static org.slf4j.LoggerFactory.getLogger;
 
 
 @ThreadSafe
 public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel<UserOrdersEditChannel.CancelResponse, String> {
 
-  private static final Logger log = getLogger(UserOrdersEditChannel.class);
+  private static final Logger log = LogManager.getLogger(UserOrdersEditChannel.class);
 
   private volatile EditOrdersResponseListener listener;
 

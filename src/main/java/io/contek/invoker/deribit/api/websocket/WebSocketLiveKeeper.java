@@ -5,17 +5,17 @@ import io.contek.invoker.commons.websocket.IWebSocketLiveKeeper;
 import io.contek.invoker.commons.websocket.WebSocketSession;
 import io.contek.invoker.commons.websocket.WebSocketSessionInactiveException;
 import io.contek.invoker.deribit.api.websocket.common.*;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.slf4j.LoggerFactory.getLogger;
 
 @ThreadSafe
 public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
 
-    private static final Logger log = getLogger(WebSocketLiveKeeper.class);
+    private static final Logger log = LogManager.getLogger(WebSocketLiveKeeper.class);
 
     private static final int HEARTBEAT_FREQ = 15; // seconds
 
