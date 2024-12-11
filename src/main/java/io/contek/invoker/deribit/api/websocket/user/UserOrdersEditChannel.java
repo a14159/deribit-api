@@ -4,6 +4,7 @@ import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 import io.contek.invoker.commons.websocket.SubscriptionState;
 import io.contek.invoker.deribit.api.common._PlaceOrderResponse;
 import io.contek.invoker.deribit.api.common.constants.OrderTypeKeys;
+import io.contek.invoker.deribit.api.common.constants.SideKeys;
 import io.contek.invoker.deribit.api.websocket.WebSocketNoSubscribeId;
 import io.contek.invoker.deribit.api.websocket.WebSocketRequestIdGenerator;
 import io.contek.invoker.deribit.api.websocket.common.*;
@@ -47,7 +48,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
 
   public int placeLimitOrder(String market, String clientId, String side, BigDecimal price, BigDecimal qty) {
     if (session == null) {
-      log.warn("Trying to place an order but we don't have the session");
+      log.warn("Trying to place a limit order but we don't have the session");
       return -1;
     }
     PlaceOrderParams params = new PlaceOrderParams();
@@ -59,7 +60,11 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
 
     WebSocketRequest<PlaceOrderParams> request = new WebSocketRequest<>();
     request.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
-    request.method = "private/" + side;
+    switch (side) {
+      case SideKeys._buy -> request.method = "private/buy";
+      case SideKeys._sell -> request.method = "private/sell";
+      default -> throw new IllegalArgumentException("Wrong side argument");
+    }
     request.params = params;
 
     session.send(request);
@@ -68,7 +73,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
 
   public int placeMarketOrder(String market, String clientId, String side, BigDecimal qty) {
     if (session == null) {
-      log.warn("Trying to place an order but we don't have the session");
+      log.warn("Trying to place a market order but we don't have the session");
       return -1;
     }
     PlaceOrderParams params = new PlaceOrderParams();
@@ -79,7 +84,11 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
 
     WebSocketRequest<PlaceOrderParams> request = new WebSocketRequest<>();
     request.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
-    request.method = "private/" + side;
+    switch (side) {
+      case SideKeys._buy -> request.method = "private/buy";
+      case SideKeys._sell -> request.method = "private/sell";
+      default -> throw new IllegalArgumentException("Wrong side argument");
+    }
     request.params = params;
 
     session.send(request);

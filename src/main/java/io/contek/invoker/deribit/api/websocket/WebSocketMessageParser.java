@@ -36,15 +36,16 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
   @Override
   protected AnyWebSocketMessage fromText(String text) {
     JSONObject obj = JSON.parseObject(text);
-    if (obj.containsKey("id")) {
-      return toResponseMessage(obj);
-    } else if (obj.containsKey("params")) {
+    if (obj.containsKey("params")) {
       if (obj.containsKey("method") && obj.get("method").toString().equals("heartbeat"))
         return new WebSocketHeartbeat();
       return toDataMessage(obj);
-    } else {
-      throw new IllegalArgumentException(text);
     }
+    if (obj.containsKey("id")) {
+      return toResponseMessage(obj);
+    }
+
+    throw new IllegalArgumentException(text);
   }
 
   private WebSocketResponse<?> toResponseMessage(JSONObject obj) {
@@ -59,6 +60,15 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
   private WebSocketInboundMessage toDataMessage(JSONObject obj) {
     JSONObject params = obj.getJSONObject("params");
     String channel = params.get("channel").toString();
+    if (channel.startsWith(WebSocketChannelKeys._tickers)) {
+      return obj.toJavaObject(UserTickersChannel.Message.class);
+    }
+    if (channel.startsWith(WebSocketChannelKeys._user_trades)) {
+      return obj.toJavaObject(UserTradesChannel.Message.class);
+    }
+    if (channel.startsWith(WebSocketChannelKeys._user_orders)) {
+      return obj.toJavaObject(UserOrdersChannel.Message.class);
+    }
     if (channel.startsWith(WebSocketChannelKeys._book)) {
       JSONObject data = params.getJSONObject("data");
       if (data.containsKey("type")) {
@@ -66,22 +76,13 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
       }
       return obj.toJavaObject(BookSnapshotChannel.Message.class);
     }
-    if (channel.startsWith(WebSocketChannelKeys._trades)) {
-      return obj.toJavaObject(TradesChannel.Message.class);
-    }
     if (channel.startsWith(WebSocketChannelKeys._user_changes)) {
       return obj.toJavaObject(UserChangesChannel.Message.class);
     }
-    if (channel.startsWith(WebSocketChannelKeys._user_orders)) {
-      return obj.toJavaObject(UserOrdersChannel.Message.class);
+    if (channel.startsWith(WebSocketChannelKeys._trades)) {
+      return obj.toJavaObject(TradesChannel.Message.class);
     }
-    if (channel.startsWith(WebSocketChannelKeys._user_trades)) {
-      return obj.toJavaObject(UserTradesChannel.Message.class);
-    }
-    if (channel.startsWith(WebSocketChannelKeys._tickers)) {
-      return obj.toJavaObject(UserTickersChannel.Message.class);
-    } else {
-      throw new IllegalArgumentException(obj.toString());
-    }
+
+    throw new IllegalArgumentException(obj.toString());
   }
 }

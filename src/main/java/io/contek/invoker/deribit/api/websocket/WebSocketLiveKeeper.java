@@ -17,6 +17,8 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
 
     private static final Logger log = LogManager.getLogger(WebSocketLiveKeeper.class);
 
+    public static final boolean DEBUG = false; // javac should remove the corresponding code
+
     private static final int HEARTBEAT_FREQ = 15; // seconds
 
     private final WebSocketRequestIdGenerator requestIdGenerator;
@@ -58,18 +60,22 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
         lastHeartbeat = System.currentTimeMillis();
 //        log.debug("received message: {}", message.getClass());
         if (message instanceof WebSocketHeartbeat) { // server is requesting us to send a test request
-            heartbeats++;
-            log.debug("Received heartbeat message #{} (and sending a test request)", heartbeats);
+            if (DEBUG) {
+                heartbeats++;
+                log.debug("Received heartbeat message #{} (and sending a test request)", heartbeats);
+            }
             WebSocketTestRequest request = new WebSocketTestRequest();
             request.id = requestIdGenerator.getNextRequestId(WebSocketTestResponse.class);
             session.send(request);
         }
-        if (message instanceof WebSocketTestResponse) { // received a response to our last test request
-            testResponses++;
-            log.debug("Received test response message #{}", testResponses);
-        }
-        if (message instanceof HeartbeatResponse hb) { // confirmation for our set heartbeat
-            log.debug("Receiving set heartbeat response: {}", hb.result);
+        if (DEBUG) {
+            if (message instanceof WebSocketTestResponse) { // received a response to our last test request
+                testResponses++;
+                log.debug("Received test response message #{}", testResponses);
+            }
+            if (message instanceof HeartbeatResponse hb) { // confirmation for our set heartbeat
+                log.debug("Receiving set heartbeat response: {}", hb.result);
+            }
         }
     }
 

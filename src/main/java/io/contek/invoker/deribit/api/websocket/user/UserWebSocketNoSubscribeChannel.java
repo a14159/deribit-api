@@ -18,7 +18,7 @@ import static io.contek.invoker.commons.websocket.SubscriptionState.UNSUBSCRIBIN
 public abstract class UserWebSocketNoSubscribeChannel<Message extends WebSocketResponse<Data>, Data>
     extends BaseWebSocketChannel<WebSocketNoSubscribeId<Message>, Message, Data> {
 
-  protected WebSocketRequestIdGenerator idGenerator;
+  protected final WebSocketRequestIdGenerator idGenerator;
   protected volatile WebSocketSession session;
 
   protected volatile SubscriptionState lastStatusSent;
@@ -36,7 +36,6 @@ public abstract class UserWebSocketNoSubscribeChannel<Message extends WebSocketR
 
   @Override
   protected SubscriptionState subscribe(WebSocketSession webSocketSession) {
-//    System.out.println("[UserWebSocketNoSubscribeChannel] SUBSCRIBE was called");
     this.session = webSocketSession;
     // send test request to move to subscribed state faster
     WebSocketTestRequest request = new WebSocketTestRequest();
@@ -48,14 +47,12 @@ public abstract class UserWebSocketNoSubscribeChannel<Message extends WebSocketR
 
   @Override
   protected SubscriptionState unsubscribe(WebSocketSession webSocketSession) {
-//    System.out.println("[UserWebSocketNoSubscribeChannel] UNSUBSCRIBE was called");
     lastStatusSent = UNSUBSCRIBING;
     return UNSUBSCRIBING;
   }
 
   @Override
   protected void reset() {
-//    System.out.println("[UserWebSocketNoSubscribeChannel] RESET was called");
     session = null;
   }
 
