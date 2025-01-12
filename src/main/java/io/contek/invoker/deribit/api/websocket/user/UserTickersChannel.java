@@ -1,6 +1,6 @@
 package io.contek.invoker.deribit.api.websocket.user;
 
-import io.contek.invoker.deribit.api.common._Ticker;
+import io.contek.invoker.deribit.api.common._LightTicker;
 import io.contek.invoker.deribit.api.websocket.WebSocketChannelId;
 import io.contek.invoker.deribit.api.websocket.WebSocketRequestIdGenerator;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketSingleChannelMessage;
@@ -40,5 +40,5 @@ public final class UserTickersChannel
   public static final class Message extends WebSocketSingleChannelMessage<Data> {}
 
   @NotThreadSafe
-  public static final class Data extends _Ticker {}
+  public static final class Data extends _LightTicker {}
 }
