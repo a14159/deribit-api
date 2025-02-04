@@ -46,29 +46,38 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     }
   }
 
+  private final WebSocketRequest<PlaceOrderParams> loRequest = new WebSocketRequest<>();
+  {
+    loRequest.params = new PlaceOrderParams();
+  }
+
   public int placeLimitOrder(String market, String clientId, String side, BigDecimal price, BigDecimal qty) {
     if (session == null) {
       log.warn("Trying to place a limit order but we don't have the session");
       return -1;
     }
-    PlaceOrderParams params = new PlaceOrderParams();
-    params.instrument_name = market;
-    params.type = OrderTypeKeys._limit;
-    params.label = clientId;
-    params.price = price;
-    params.amount = qty;
+    synchronized (loRequest) {
+      loRequest.params.instrument_name = market;
+      loRequest.params.type = OrderTypeKeys._limit;
+      loRequest.params.label = clientId;
+      loRequest.params.price = price;
+      loRequest.params.amount = qty;
 
-    WebSocketRequest<PlaceOrderParams> request = new WebSocketRequest<>();
-    request.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
-    switch (side) {
-      case SideKeys._buy -> request.method = "private/buy";
-      case SideKeys._sell -> request.method = "private/sell";
-      default -> throw new IllegalArgumentException("Wrong side argument");
+      loRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
+      switch (side) {
+        case SideKeys._buy -> loRequest.method = "private/buy";
+        case SideKeys._sell -> loRequest.method = "private/sell";
+        default -> throw new IllegalArgumentException("Wrong side argument");
+      }
+
+      session.send(loRequest);
     }
-    request.params = params;
+    return loRequest.id;
+  }
 
-    session.send(request);
-    return request.id;
+  private final WebSocketRequest<PlaceOrderParams> moRequest = new WebSocketRequest<>();
+  {
+    moRequest.params = new PlaceOrderParams();
   }
 
   public int placeMarketOrder(String market, String clientId, String side, BigDecimal qty) {
@@ -76,23 +85,28 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       log.warn("Trying to place a market order but we don't have the session");
       return -1;
     }
-    PlaceOrderParams params = new PlaceOrderParams();
-    params.instrument_name = market;
-    params.type = OrderTypeKeys._market;
-    params.label = clientId;
-    params.amount = qty;
+      synchronized (moRequest) {
+          moRequest.params.instrument_name = market;
+          moRequest.params.type = OrderTypeKeys._market;
+          moRequest.params.label = clientId;
+          moRequest.params.amount = qty;
 
-    WebSocketRequest<PlaceOrderParams> request = new WebSocketRequest<>();
-    request.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
-    switch (side) {
-      case SideKeys._buy -> request.method = "private/buy";
-      case SideKeys._sell -> request.method = "private/sell";
-      default -> throw new IllegalArgumentException("Wrong side argument");
-    }
-    request.params = params;
+          moRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
+          switch (side) {
+            case SideKeys._buy -> moRequest.method = "private/buy";
+            case SideKeys._sell -> moRequest.method = "private/sell";
+            default -> throw new IllegalArgumentException("Wrong side argument");
+          }
 
-    session.send(request);
-    return request.id;
+          session.send(moRequest);
+      }
+      return moRequest.id;
+  }
+
+  private final WebSocketRequest<CancelOrderParams> cancelRequest = new WebSocketRequest<>();
+  {
+    cancelRequest.params = new CancelOrderParams();
+    cancelRequest.method = "private/cancel_by_label";
   }
 
   public int cancelOrder(String clientId, String currency) {
@@ -100,16 +114,20 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       log.warn("Trying to cancel an order but we don't have the session");
       return -1;
     }
-    CancelOrderParams params = new CancelOrderParams();
-    params.label = clientId;
-    params.currency = currency;
-    WebSocketRequest<CancelOrderParams> request = new WebSocketRequest<>();
-    request.id = idGenerator.getNextRequestId(CancelResponse.class);
-    request.method = "private/cancel_by_label";
-    request.params = params;
+      synchronized (cancelRequest) {
+          cancelRequest.params.label = clientId;
+          cancelRequest.params.currency = currency;
+          cancelRequest.id = idGenerator.getNextRequestId(CancelResponse.class);
 
-    session.send(request);
-    return request.id;
+          session.send(cancelRequest);
+      }
+      return cancelRequest.id;
+  }
+
+  private final WebSocketRequest<CancelAllOrdersParams> cancelAllRequest = new WebSocketRequest<>();
+  {
+    cancelAllRequest.params = new CancelAllOrdersParams();
+    cancelAllRequest.method = "private/cancel_all_by_instrument";
   }
 
   public int cancelAllOrders(String market) {
@@ -117,15 +135,14 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       log.warn("Trying to cancel all orders but we don't have the session");
       return -1;
     }
-    CancelAllOrdersParams params = new CancelAllOrdersParams();
-    params.instrument_name = market;
-    WebSocketRequest<CancelAllOrdersParams> request = new WebSocketRequest<>();
-    request.id = idGenerator.getNextRequestId(CancelResponse.class);
-    request.method = "private/cancel_all_by_instrument";
-    request.params = params;
 
-    session.send(request);
-    return request.id;
+      synchronized (cancelAllRequest) {
+          cancelAllRequest.params.instrument_name = market;
+          cancelAllRequest.id = idGenerator.getNextRequestId(CancelResponse.class);
+
+          session.send(cancelAllRequest);
+      }
+      return cancelAllRequest.id;
   }
 
   @Override

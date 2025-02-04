@@ -55,6 +55,8 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
         }
     }
 
+    private final WebSocketTestRequest testRequest = new WebSocketTestRequest();
+
     @Override
     public void onMessage(AnyWebSocketMessage message, WebSocketSession session) {
         lastHeartbeat = System.currentTimeMillis();
@@ -64,9 +66,10 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
                 heartbeats++;
                 log.debug("Received heartbeat message #{} (and sending a test request)", heartbeats);
             }
-            WebSocketTestRequest request = new WebSocketTestRequest();
-            request.id = requestIdGenerator.getNextRequestId(WebSocketTestResponse.class);
-            session.send(request);
+            synchronized (testRequest) {
+                testRequest.id = requestIdGenerator.getNextRequestId(WebSocketTestResponse.class);
+                session.send(testRequest);
+            }
         }
         if (DEBUG) {
             if (message instanceof WebSocketTestResponse) { // received a response to our last test request
