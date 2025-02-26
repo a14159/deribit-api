@@ -124,6 +124,26 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       return cancelRequest.id;
   }
 
+  private final WebSocketRequest<CancelOrderByIdParams> cancelByIdRequest = new WebSocketRequest<>();
+  {
+    cancelByIdRequest.params = new CancelOrderByIdParams();
+    cancelByIdRequest.method = "private/cancel";
+  }
+
+  public int cancelOrderById(String orderId) {
+    if (session == null) {
+      log.warn("Trying to cancel an order by id but we don't have the session");
+      return -1;
+    }
+    synchronized (cancelByIdRequest) {
+      cancelByIdRequest.params.order_id = orderId;
+      cancelByIdRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
+
+      session.send(cancelRequest);
+    }
+    return cancelRequest.id;
+  }
+
   private final WebSocketRequest<CancelAllOrdersParams> cancelAllRequest = new WebSocketRequest<>();
   {
     cancelAllRequest.params = new CancelAllOrdersParams();
