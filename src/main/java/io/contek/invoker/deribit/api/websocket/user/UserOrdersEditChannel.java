@@ -2,6 +2,7 @@ package io.contek.invoker.deribit.api.websocket.user;
 
 import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 import io.contek.invoker.commons.websocket.SubscriptionState;
+import io.contek.invoker.deribit.api.common._Order;
 import io.contek.invoker.deribit.api.common._PlaceOrderResponse;
 import io.contek.invoker.deribit.api.common.constants.OrderTypeKeys;
 import io.contek.invoker.deribit.api.common.constants.SideKeys;
@@ -137,7 +138,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     }
     synchronized (cancelByIdRequest) {
       cancelByIdRequest.params.order_id = orderId;
-      cancelByIdRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
+      cancelByIdRequest.id = idGenerator.getNextRequestId(CancelByIdResponse.class);
 
       session.send(cancelRequest);
     }
@@ -185,6 +186,8 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
 
   @NotThreadSafe
   public static final class CancelResponse extends WebSocketResponse<String> implements EditOrderResponse {}
+
+  public static final class CancelByIdResponse extends WebSocketResponse<_Order> implements EditOrderResponse {}
 
   public static final class PlaceOrderResponse extends WebSocketResponse<_PlaceOrderResponse> implements EditOrderResponse {}
 }
