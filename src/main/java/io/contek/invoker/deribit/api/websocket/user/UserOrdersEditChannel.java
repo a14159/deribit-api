@@ -86,22 +86,22 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       log.warn("Trying to place a market order but we don't have the session");
       return -1;
     }
-      synchronized (moRequest) {
-          moRequest.params.instrument_name = market;
-          moRequest.params.type = OrderTypeKeys._market;
-          moRequest.params.label = clientId;
-          moRequest.params.amount = qty;
+    synchronized (moRequest) {
+      moRequest.params.instrument_name = market;
+      moRequest.params.type = OrderTypeKeys._market;
+      moRequest.params.label = clientId;
+      moRequest.params.amount = qty;
 
-          moRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
-          switch (side) {
-            case SideKeys._buy -> moRequest.method = "private/buy";
-            case SideKeys._sell -> moRequest.method = "private/sell";
-            default -> throw new IllegalArgumentException("Wrong side argument");
-          }
-
-          session.send(moRequest);
+      moRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
+      switch (side) {
+        case SideKeys._buy -> moRequest.method = "private/buy";
+        case SideKeys._sell -> moRequest.method = "private/sell";
+        default -> throw new IllegalArgumentException("Wrong side argument");
       }
-      return moRequest.id;
+
+      session.send(moRequest);
+    }
+    return moRequest.id;
   }
 
   private final WebSocketRequest<CancelOrderParams> cancelRequest = new WebSocketRequest<>();
@@ -110,19 +110,19 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     cancelRequest.method = "private/cancel_by_label";
   }
 
-  public int cancelOrder(String clientId, String currency) {
+  public int cancelOrderByLabel(String clientId, String currency) {
     if (session == null) {
       log.warn("Trying to cancel an order but we don't have the session");
       return -1;
     }
-      synchronized (cancelRequest) {
-          cancelRequest.params.label = clientId;
-          cancelRequest.params.currency = currency;
-          cancelRequest.id = idGenerator.getNextRequestId(CancelResponse.class);
+    synchronized (cancelRequest) {
+      cancelRequest.params.label = clientId;
+      cancelRequest.params.currency = currency;
+      cancelRequest.id = idGenerator.getNextRequestId(CancelResponse.class);
 
-          session.send(cancelRequest);
-      }
-      return cancelRequest.id;
+      session.send(cancelRequest);
+    }
+    return cancelRequest.id;
   }
 
   private final WebSocketRequest<CancelOrderByIdParams> cancelByIdRequest = new WebSocketRequest<>();
@@ -140,9 +140,9 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       cancelByIdRequest.params.order_id = orderId;
       cancelByIdRequest.id = idGenerator.getNextRequestId(CancelByIdResponse.class);
 
-      session.send(cancelRequest);
+      session.send(cancelByIdRequest);
     }
-    return cancelRequest.id;
+    return cancelByIdRequest.id;
   }
 
   private final WebSocketRequest<CancelAllOrdersParams> cancelAllRequest = new WebSocketRequest<>();
@@ -157,13 +157,13 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       return -1;
     }
 
-      synchronized (cancelAllRequest) {
-          cancelAllRequest.params.instrument_name = market;
-          cancelAllRequest.id = idGenerator.getNextRequestId(CancelResponse.class);
+    synchronized (cancelAllRequest) {
+      cancelAllRequest.params.instrument_name = market;
+      cancelAllRequest.id = idGenerator.getNextRequestId(CancelResponse.class);
 
-          session.send(cancelAllRequest);
-      }
-      return cancelAllRequest.id;
+      session.send(cancelAllRequest);
+    }
+    return cancelAllRequest.id;
   }
 
   @Override
