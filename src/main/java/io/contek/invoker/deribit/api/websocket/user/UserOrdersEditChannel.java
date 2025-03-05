@@ -12,6 +12,7 @@ import io.contek.invoker.deribit.api.websocket.common.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;
@@ -82,15 +83,17 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     editRequest.method = "private/edit";
   }
 
-  public int editLimitOrderById(String market, String orderId, String side, BigDecimal price, BigDecimal qty) {
+  public int editLimitOrderById(String orderId, @Nullable BigDecimal price, @Nullable BigDecimal qty) {
     if (session == null) {
       log.warn("Trying to edit a limit order by order id but we don't have the session");
       return -1;
     }
     synchronized (editRequest) {
       editRequest.params.order_id = orderId;
-      editRequest.params.price = price;
-      editRequest.params.amount = qty;
+      if (price != null)
+        editRequest.params.price = price;
+      if (qty != null)
+        editRequest.params.amount = qty;
 
       editRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
 
