@@ -28,6 +28,10 @@ public final class UserRestApi {
     return new GetSell(actor, context);
   }
 
+  public GetEditOrder getEditOrder() {
+    return new GetEditOrder(actor, context);
+  }
+
   public GetCancel getCancel() {
     return new GetCancel(actor, context);
   }
