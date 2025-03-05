@@ -76,6 +76,29 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     return loRequest.id;
   }
 
+  private final WebSocketRequest<EditOrderByIdParams> editRequest = new WebSocketRequest<>();
+  {
+    editRequest.params = new EditOrderByIdParams();
+    editRequest.method = "private/edit";
+  }
+
+  public int editLimitOrderById(String market, String orderId, String side, BigDecimal price, BigDecimal qty) {
+    if (session == null) {
+      log.warn("Trying to edit a limit order by order id but we don't have the session");
+      return -1;
+    }
+    synchronized (editRequest) {
+      editRequest.params.order_id = orderId;
+      editRequest.params.price = price;
+      editRequest.params.amount = qty;
+
+      editRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
+
+      session.send(editRequest);
+    }
+    return editRequest.id;
+  }
+
   private final WebSocketRequest<PlaceOrderParams> moRequest = new WebSocketRequest<>();
   {
     moRequest.params = new PlaceOrderParams();
