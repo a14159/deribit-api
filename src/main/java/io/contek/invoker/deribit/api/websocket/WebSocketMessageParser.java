@@ -50,7 +50,10 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
 
   private WebSocketResponse<?> toResponseMessage(JSONObject obj) {
     int id = Integer.parseInt(obj.get("id").toString());
-    Class<? extends WebSocketResponse<?>> type = pendingRequests.remove(id);
+    Class<? extends WebSocketResponse<?>> type;
+    synchronized (pendingRequests) {
+      type = pendingRequests.remove(id);
+    }
     if (type == null) {
       throw new IllegalStateException(format("Expected response type not found: %d", id));
     }
