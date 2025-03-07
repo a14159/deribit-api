@@ -51,6 +51,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
   private final WebSocketRequest<PlaceOrderParams> loRequest = new WebSocketRequest<>();
   {
     loRequest.params = new PlaceOrderParams();
+    loRequest.params.type = OrderTypeKeys._limit;
   }
 
   public int placeLimitOrder(String market, String clientId, String side, BigDecimal price, BigDecimal qty) {
@@ -60,7 +61,6 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     }
     synchronized (loRequest) {
       loRequest.params.instrument_name = market;
-      loRequest.params.type = OrderTypeKeys._limit;
       loRequest.params.label = clientId;
       loRequest.params.price = price;
       loRequest.params.amount = qty;
@@ -83,17 +83,15 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     editRequest.method = "private/edit";
   }
 
-  public int editLimitOrderById(String orderId, @Nullable BigDecimal price, @Nullable BigDecimal qty) {
+  public int editLimitOrderById(String orderId, @Nullable BigDecimal price, BigDecimal qty) {
     if (session == null) {
       log.warn("Trying to edit a limit order by order id but we don't have the session");
       return -1;
     }
     synchronized (editRequest) {
       editRequest.params.order_id = orderId;
-      if (price != null)
-        editRequest.params.price = price;
-      if (qty != null)
-        editRequest.params.amount = qty;
+      editRequest.params.price = price;
+      editRequest.params.amount = qty;
 
       editRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
 
@@ -105,6 +103,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
   private final WebSocketRequest<PlaceOrderParams> moRequest = new WebSocketRequest<>();
   {
     moRequest.params = new PlaceOrderParams();
+    moRequest.params.type = OrderTypeKeys._market;
   }
 
   public int placeMarketOrder(String market, String clientId, String side, BigDecimal qty) {
@@ -114,7 +113,6 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     }
     synchronized (moRequest) {
       moRequest.params.instrument_name = market;
-      moRequest.params.type = OrderTypeKeys._market;
       moRequest.params.label = clientId;
       moRequest.params.amount = qty;
 
