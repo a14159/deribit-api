@@ -96,6 +96,8 @@ final class WebSocketAuthenticator implements IWebSocketAuthenticator {
       return;
     }
 
+    log.debug("Receiving authentication confirmation message");
+
     WebSocketRequest<AuthParams> request = pendingRequestHolder.get();
     if (request == null) {
       return;
