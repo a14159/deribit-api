@@ -33,8 +33,7 @@ final class WebSocketAuthenticator implements IWebSocketAuthenticator {
   private final WebSocketRequestIdGenerator requestIdGenerator;
   private final Clock clock;
 
-  private final AtomicReference<WebSocketRequest<AuthParams>> pendingRequestHolder =
-      new AtomicReference<>();
+  private final AtomicReference<WebSocketRequest<AuthParams>> pendingRequestHolder = new AtomicReference<>();
   private final AtomicBoolean authenticated = new AtomicBoolean();
 
   WebSocketAuthenticator(
