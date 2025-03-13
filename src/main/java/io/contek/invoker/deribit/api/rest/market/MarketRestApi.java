@@ -36,6 +36,10 @@ public final class MarketRestApi {
     return new GetOrderBook(actor, context);
   }
 
+  public GetOrderBookById getOrderBookById() {
+    return new GetOrderBookById(actor, context);
+  }
+
   public GetTicker getTicker() {
     return new GetTicker(actor, context);
   }
