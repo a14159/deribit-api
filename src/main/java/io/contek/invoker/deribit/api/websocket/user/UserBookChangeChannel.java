@@ -51,6 +51,7 @@ public final class UserBookChangeChannel
     public long change_id;
     public List<LevelUpdate> bids;
     public List<LevelUpdate> asks;
+    public long traceNano = System.nanoTime();
   }
 
   @NotThreadSafe

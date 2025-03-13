@@ -49,5 +49,6 @@ public final class BookSnapshotChannel
     public long change_id;
     public List<_OrderBookLevel> bids;
     public List<_OrderBookLevel> asks;
+    public long traceNano = System.nanoTime();
   }
 }
