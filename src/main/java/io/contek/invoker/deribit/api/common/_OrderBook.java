@@ -31,6 +31,7 @@ public class _OrderBook {
   public String state;
   public _Stats stats;
   public Long timestamp;
+  public Long change_id;
   public Double underlying_index;
   public Double underlying_price;
   public long traceNano = System.nanoTime();
