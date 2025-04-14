@@ -1,6 +1,5 @@
 package io.contek.invoker.deribit.api.rest.market;
 
-import com.google.common.collect.ImmutableList;
 import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.actor.ratelimit.TypedPermitRequest;
 import io.contek.invoker.commons.rest.RestContext;
@@ -9,6 +8,7 @@ import io.contek.invoker.deribit.api.rest.common.RestResponse;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import java.math.BigDecimal;
+import java.util.List;
 
 import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.ONE_IP_NON_MATCHING_ENGINE_REQUEST;
 import static java.util.Objects.requireNonNull;
@@ -62,7 +62,7 @@ public final class GetFundingRate extends MarketRestRequest<GetFundingRate.Respo
   }
 
   @Override
-  protected ImmutableList<TypedPermitRequest> getRequiredQuotas() {
+  protected List<TypedPermitRequest> getRequiredQuotas() {
     return ONE_IP_NON_MATCHING_ENGINE_REQUEST;
   }
 

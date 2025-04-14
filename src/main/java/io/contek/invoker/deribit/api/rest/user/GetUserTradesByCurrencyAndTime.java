@@ -1,6 +1,5 @@
 package io.contek.invoker.deribit.api.rest.user;
 
-import com.google.common.collect.ImmutableList;
 import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.actor.ratelimit.TypedPermitRequest;
 import io.contek.invoker.commons.rest.RestContext;
@@ -10,6 +9,7 @@ import io.contek.invoker.deribit.api.common._UserTrades;
 import io.contek.invoker.deribit.api.rest.common.RestResponse;
 
 import javax.annotation.concurrent.NotThreadSafe;
+import java.util.List;
 
 import static io.contek.invoker.commons.rest.RestMethod.GET;
 import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.ONE_API_KEY_NON_MATCHING_ENGINE_REQUEST;
@@ -73,7 +73,7 @@ public final class GetUserTradesByCurrencyAndTime extends UserRestRequest<GetUse
   }
 
   @Override
-  protected ImmutableList<TypedPermitRequest> getRequiredQuotas() {
+  protected List<TypedPermitRequest> getRequiredQuotas() {
     return ONE_API_KEY_NON_MATCHING_ENGINE_REQUEST;
   }
 

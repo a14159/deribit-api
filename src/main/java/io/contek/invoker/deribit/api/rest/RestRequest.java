@@ -1,7 +1,5 @@
 package io.contek.invoker.deribit.api.rest;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.io.BaseEncoding;
 import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.actor.http.AnyHttpException;
@@ -11,6 +9,8 @@ import io.contek.invoker.security.ICredential;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import java.time.Clock;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
@@ -34,7 +34,7 @@ public abstract class RestRequest<R> extends BaseRestRequest<R> {
 
   protected abstract RestParams getParams();
 
-  protected abstract ImmutableList<TypedPermitRequest> getRequiredQuotas();
+  protected abstract List<TypedPermitRequest> getRequiredQuotas();
 
   @Override
   protected final RestCall createCall(ICredential credential) {
@@ -64,14 +64,14 @@ public abstract class RestRequest<R> extends BaseRestRequest<R> {
   @Override
   protected final void checkResult(R result, RestResponse response) throws AnyHttpException {}
 
-  private ImmutableMap<String, String> generateHeaders(
+  private Map<String, String> generateHeaders(
       RestMethod method, String paramsString, String bodyString, ICredential credential) {
 
     if (credential.isAnonymous()) {
-      return ImmutableMap.of();
+      return Map.of();
     }
     String clientId = credential.getApiKeyId();
-    String timestamp = String.valueOf(clock.millis());
+    String timestamp = Long.toString(clock.millis());
     String nonce = generateNounce();
     String uri = getEndpointPath() + paramsString;
     String payload =
@@ -80,12 +80,14 @@ public abstract class RestRequest<R> extends BaseRestRequest<R> {
     String authorizationValue =
         String.format(
             "deri-hmac-sha256 id=%s,ts=%s,sig=%s,nonce=%s", clientId, timestamp, signature, nonce);
-    return ImmutableMap.<String, String>builder().put("Authorization", authorizationValue).build();
+    return Map.of("Authorization", authorizationValue);
   }
 
+  private static final Random rnd = new Random();
+  private static final byte[] randomBytes = new byte[8];
+
   private static String generateNounce() {
-    byte[] randomBytes = new byte[8];
-    (new Random()).nextBytes(randomBytes);
+    rnd.nextBytes(randomBytes);
     return BaseEncoding.base32().encode(randomBytes);
   }
 

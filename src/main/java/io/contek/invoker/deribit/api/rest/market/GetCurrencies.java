@@ -1,6 +1,5 @@
 package io.contek.invoker.deribit.api.rest.market;
 
-import com.google.common.collect.ImmutableList;
 import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.actor.ratelimit.TypedPermitRequest;
 import io.contek.invoker.commons.rest.RestContext;
@@ -36,7 +35,7 @@ public final class GetCurrencies extends MarketRestRequest<GetCurrencies.Respons
   }
 
   @Override
-  protected ImmutableList<TypedPermitRequest> getRequiredQuotas() {
+  protected List<TypedPermitRequest> getRequiredQuotas() {
     return ONE_IP_NON_MATCHING_ENGINE_REQUEST;
   }
 

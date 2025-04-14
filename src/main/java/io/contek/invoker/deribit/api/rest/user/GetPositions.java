@@ -1,6 +1,5 @@
 package io.contek.invoker.deribit.api.rest.user;
 
-import com.google.common.collect.ImmutableList;
 import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.actor.ratelimit.TypedPermitRequest;
 import io.contek.invoker.commons.rest.RestContext;
@@ -61,7 +60,7 @@ public final class GetPositions extends UserRestRequest<GetPositions.Response> {
   }
 
   @Override
-  protected ImmutableList<TypedPermitRequest> getRequiredQuotas() {
+  protected List<TypedPermitRequest> getRequiredQuotas() {
     return ONE_API_KEY_NON_MATCHING_ENGINE_REQUEST;
   }
 

@@ -1,6 +1,5 @@
 package io.contek.invoker.deribit.api.websocket;
 
-import com.google.common.collect.ImmutableList;
 import io.contek.invoker.commons.websocket.*;
 import io.contek.invoker.deribit.api.websocket.common.SubscriptionParams;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketRequest;
@@ -9,6 +8,7 @@ import io.contek.invoker.deribit.api.websocket.common.WebSocketSubscriptionConfi
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.contek.invoker.commons.websocket.SubscriptionState.*;
@@ -48,7 +48,7 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
 
       WebSocketChannelId<Message> id = getId();
       SubscriptionParams params = new SubscriptionParams();
-      params.channels = ImmutableList.of(id.getChannel());
+      params.channels = List.of(id.getChannel());
 
       WebSocketRequest<SubscriptionParams> request = new WebSocketRequest<>();
       request.id = requestIdGenerator.getNextRequestId(WebSocketSubscriptionConfirmation.class);
@@ -69,7 +69,7 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
 
       WebSocketChannelId<Message> id = getId();
       SubscriptionParams params = new SubscriptionParams();
-      params.channels = ImmutableList.of(id.getChannel());
+      params.channels = List.of(id.getChannel());
 
       WebSocketRequest<SubscriptionParams> request = new WebSocketRequest<>();
       request.id = requestIdGenerator.getNextRequestId(WebSocketSubscriptionConfirmation.class);

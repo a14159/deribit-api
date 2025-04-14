@@ -1,6 +1,5 @@
 package io.contek.invoker.deribit.api;
 
-import com.google.common.collect.ImmutableList;
 import io.contek.invoker.commons.ApiContext;
 import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.actor.IActorFactory;
@@ -198,17 +197,17 @@ public final class ApiFactory {
             .setResetPeriod(Duration.ofSeconds(1))
             .build();
 
-    public static final ImmutableList<TypedPermitRequest> ONE_API_KEY_MATCHING_ENGINE_REQUEST =
-        ImmutableList.of(API_KEY_MATCHING_ENGINE_REQUEST_RULE.forPermits(1));
+    public static final List<TypedPermitRequest> ONE_API_KEY_MATCHING_ENGINE_REQUEST =
+        List.of(API_KEY_MATCHING_ENGINE_REQUEST_RULE.forPermits(1));
 
-    public static final ImmutableList<TypedPermitRequest> ONE_API_KEY_NON_MATCHING_ENGINE_REQUEST =
-        ImmutableList.of(API_KEY_NON_MATCHING_ENGINE_REQUEST_RULE.forPermits(1));
+    public static final List<TypedPermitRequest> ONE_API_KEY_NON_MATCHING_ENGINE_REQUEST =
+        List.of(API_KEY_NON_MATCHING_ENGINE_REQUEST_RULE.forPermits(1));
 
-    public static final ImmutableList<TypedPermitRequest> ONE_IP_NON_MATCHING_ENGINE_REQUEST =
-        ImmutableList.of(IP_NON_MATCHING_ENGINE_REQUEST_RULE.forPermits(1));
+    public static final List<TypedPermitRequest> ONE_IP_NON_MATCHING_ENGINE_REQUEST =
+        List.of(IP_NON_MATCHING_ENGINE_REQUEST_RULE.forPermits(1));
 
-    public static final ImmutableList<TypedPermitRequest> ONE_WEB_SOCKET_CONNECTION =
-        ImmutableList.of(IP_WEB_SOCKET_CONNECTION_RULE.forPermits(1));
+    public static final List<TypedPermitRequest> ONE_WEB_SOCKET_CONNECTION =
+        List.of(IP_WEB_SOCKET_CONNECTION_RULE.forPermits(1));
 
     private RateLimits() {}
   }
