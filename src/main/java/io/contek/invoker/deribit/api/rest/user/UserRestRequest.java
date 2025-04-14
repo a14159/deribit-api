@@ -6,13 +6,14 @@ import io.contek.invoker.deribit.api.rest.RestRequest;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import static com.google.common.base.Preconditions.checkArgument;
 
 @NotThreadSafe
 abstract class UserRestRequest<T> extends RestRequest<T> {
 
   UserRestRequest(IActor actor, RestContext context) {
     super(actor, context);
-    checkArgument(!actor.getCredential().isAnonymous());
+    if (actor.getCredential().isAnonymous()) {
+      throw new IllegalArgumentException();
+    }
   }
 }
