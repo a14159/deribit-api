@@ -25,10 +25,7 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
   private final AtomicReference<WebSocketRequest<SubscriptionParams>> pendingRequestHolder =
       new AtomicReference<>();
 
-  protected WebSocketChannel(
-      WebSocketChannelId<Message> id,
-      String scope,
-      WebSocketRequestIdGenerator requestIdGenerator) {
+  protected WebSocketChannel(WebSocketChannelId<Message> id, String scope, WebSocketRequestIdGenerator requestIdGenerator) {
     super(id);
     this.scope = scope;
     this.requestIdGenerator = requestIdGenerator;
@@ -100,8 +97,7 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
       }
 
       if (confirmation.error != null) {
-        throw new WebSocketIllegalMessageException(
-            confirmation.error.code + ": " + confirmation.error.message);
+        throw new WebSocketIllegalMessageException(confirmation.error.code + ": " + confirmation.error.message);
       }
 
       if (confirmation.result == null || confirmation.result.isEmpty()) {

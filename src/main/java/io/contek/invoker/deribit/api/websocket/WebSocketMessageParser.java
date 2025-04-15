@@ -21,8 +21,7 @@ import static java.lang.String.format;
 @ThreadSafe
 final class WebSocketMessageParser extends WebSocketTextMessageParser {
 
-  private final Map<Integer, Class<? extends WebSocketResponse<?>>> pendingRequests =
-      new ExpiringMap<>(100);
+  private final Map<Integer, Class<? extends WebSocketResponse<?>>> pendingRequests = new ExpiringMap<>(100);
 
   public void register(Integer id, Class<? extends WebSocketResponse<?>> type) {
     synchronized (pendingRequests) {

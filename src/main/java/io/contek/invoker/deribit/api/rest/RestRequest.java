@@ -78,8 +78,7 @@ public abstract class RestRequest<R> extends BaseRestRequest<R> {
         timestamp + "\n" + nonce + "\n" + method + "\n" + uri + "\n" + bodyString + "\n";
     String signature = credential.sign(payload);
     String authorizationValue =
-        String.format(
-            "deri-hmac-sha256 id=%s,ts=%s,sig=%s,nonce=%s", clientId, timestamp, signature, nonce);
+        String.format("deri-hmac-sha256 id=%s,ts=%s,sig=%s,nonce=%s", clientId, timestamp, signature, nonce);
     return Map.of("Authorization", authorizationValue);
   }
 

@@ -60,7 +60,9 @@ public final class WebSocketLiveKeeper implements IWebSocketLiveKeeper {
     @Override
     public void onMessage(AnyWebSocketMessage message, WebSocketSession session) {
         lastHeartbeat = System.currentTimeMillis();
-//        log.debug("received message: {}", message.getClass());
+        if (DEBUG) {
+            log.debug("received message: {}", message.getClass());
+        }
         if (message instanceof WebSocketHeartbeat) { // server is requesting us to send a test request
             if (DEBUG) {
                 heartbeats++;

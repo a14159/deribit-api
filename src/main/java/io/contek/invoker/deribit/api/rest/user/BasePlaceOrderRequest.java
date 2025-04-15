@@ -17,8 +17,7 @@ import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.ONE_API_KEY_MA
 import static java.util.Objects.requireNonNull;
 
 @NotThreadSafe
-public abstract class BasePlaceOrderRequest
-    extends UserRestRequest<BasePlaceOrderRequest.Response> {
+public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrderRequest.Response> {
 
   private String instrument_name;
   private BigDecimal amount;
