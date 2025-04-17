@@ -5,7 +5,10 @@ import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.actor.IActorFactory;
 import io.contek.invoker.commons.actor.SimpleActorFactory;
 import io.contek.invoker.commons.actor.http.SimpleHttpClientFactory;
-import io.contek.invoker.commons.actor.ratelimit.*;
+import io.contek.invoker.commons.actor.ratelimit.IRateLimitQuotaInterceptor;
+import io.contek.invoker.commons.actor.ratelimit.LimiterManagers;
+import io.contek.invoker.commons.actor.ratelimit.RateLimitRule;
+import io.contek.invoker.commons.actor.ratelimit.TypedPermitRequest;
 import io.contek.invoker.commons.rest.RestContext;
 import io.contek.invoker.commons.websocket.WebSocketContext;
 import io.contek.invoker.deribit.api.rest.market.MarketRestApi;
@@ -15,13 +18,13 @@ import io.contek.invoker.deribit.api.websocket.user.UserWebSocketApi;
 import io.contek.invoker.security.ApiKey;
 import io.contek.invoker.security.SimpleCredentialFactory;
 import io.contek.ursa.cache.LimiterManager;
+import removing.dependencies.BaseEncoding;
 
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 import java.time.Duration;
 import java.util.List;
 
-import static com.google.common.io.BaseEncoding.base16;
 import static io.contek.invoker.commons.actor.ratelimit.LimitType.API_KEY;
 import static io.contek.invoker.commons.actor.ratelimit.LimitType.IP;
 import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.*;
@@ -114,7 +117,7 @@ public final class ApiFactory {
   private static SimpleCredentialFactory createCredentialFactory() {
     return SimpleCredentialFactory.newBuilder()
         .setAlgorithm(HMAC_SHA256)
-        .setEncoding(base16().lowerCase())
+        .setEncoding(BaseEncoding.base16().lowerCase())
         .build();
   }
 

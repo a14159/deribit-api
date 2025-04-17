@@ -1,11 +1,14 @@
 package io.contek.invoker.deribit.api.rest;
 
-import com.google.common.io.BaseEncoding;
 import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.actor.http.AnyHttpException;
 import io.contek.invoker.commons.actor.ratelimit.TypedPermitRequest;
 import io.contek.invoker.commons.rest.*;
 import io.contek.invoker.security.ICredential;
+import removing.dependencies.BaseEncoding;
+import removing.dependencies.Escaper;
+import removing.dependencies.Escapers;
+import removing.dependencies.Encoder;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import java.time.Clock;
@@ -13,12 +16,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 import static io.contek.invoker.commons.rest.RestMediaType.JSON;
 
 @NotThreadSafe
 public abstract class RestRequest<R> extends BaseRestRequest<R> {
 
+  private static final Encoder ENCODING = BaseEncoding.base32();
+  private static final Escaper urlPathSegmentEscaper = Escapers.urlPathSegmentEscaper();
   private final RestContext context;
   private final Clock clock;
 
@@ -87,7 +91,7 @@ public abstract class RestRequest<R> extends BaseRestRequest<R> {
 
   private static String generateNounce() {
     rnd.nextBytes(randomBytes);
-    return BaseEncoding.base32().encode(randomBytes);
+    return ENCODING.encode(randomBytes);
   }
 
   private String buildParamsString() {
@@ -95,7 +99,7 @@ public abstract class RestRequest<R> extends BaseRestRequest<R> {
     if (params.isEmpty()) {
       return "";
     }
-    return "?" + params.getQueryString(urlPathSegmentEscaper());
+    return "?" + params.getQueryString(urlPathSegmentEscaper);
   }
 
   private String buildUrlString(String paramsString) {

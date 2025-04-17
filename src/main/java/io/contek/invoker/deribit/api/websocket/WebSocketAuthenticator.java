@@ -1,6 +1,5 @@
 package io.contek.invoker.deribit.api.websocket;
 
-import com.google.common.io.BaseEncoding;
 import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 import io.contek.invoker.commons.websocket.IWebSocketAuthenticator;
 import io.contek.invoker.commons.websocket.WebSocketAuthenticationException;
@@ -11,6 +10,8 @@ import io.contek.invoker.deribit.api.websocket.user.WebSocketAuthenticationConfi
 import io.contek.invoker.security.ICredential;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import removing.dependencies.BaseEncoding;
+import removing.dependencies.Encoder;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;
@@ -19,14 +20,13 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.google.common.io.BaseEncoding.base32Hex;
 import static io.contek.invoker.deribit.api.websocket.common.constants.WebSocketAuthGrantTypeKeys._client_signature;
 
 @ThreadSafe
 final class WebSocketAuthenticator implements IWebSocketAuthenticator {
 
   private static final Logger log = LogManager.getLogger(WebSocketAuthenticator.class);
-  private static final BaseEncoding ENCODING = base32Hex().lowerCase().omitPadding();
+  private static final Encoder ENCODING = BaseEncoding.base32Hex().lowerCase().omitPadding();
   private static final Random random = new Random();
 
   private final ICredential credential;
