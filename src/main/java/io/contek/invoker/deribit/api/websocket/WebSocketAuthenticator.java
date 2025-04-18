@@ -8,10 +8,10 @@ import io.contek.invoker.deribit.api.common._Error;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketRequest;
 import io.contek.invoker.deribit.api.websocket.user.WebSocketAuthenticationConfirmation;
 import io.contek.invoker.security.ICredential;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import is.fm.util.BaseEncoding;
 import is.fm.util.Encoder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;

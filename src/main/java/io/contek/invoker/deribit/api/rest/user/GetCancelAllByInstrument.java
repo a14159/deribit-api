@@ -1,17 +1,14 @@
 package io.contek.invoker.deribit.api.rest.user;
 
 import io.contek.invoker.commons.actor.IActor;
-import io.contek.invoker.commons.actor.ratelimit.TypedPermitRequest;
 import io.contek.invoker.commons.rest.RestContext;
 import io.contek.invoker.commons.rest.RestMethod;
 import io.contek.invoker.commons.rest.RestParams;
 import io.contek.invoker.deribit.api.rest.common.RestResponse;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import java.util.List;
 
 import static io.contek.invoker.commons.rest.RestMethod.GET;
-import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.ONE_API_KEY_MATCHING_ENGINE_REQUEST;
 import static java.util.Objects.requireNonNull;
 
 @NotThreadSafe
@@ -51,11 +48,6 @@ public final class GetCancelAllByInstrument extends UserRestRequest<GetCancelAll
     builder.add("instrument_name", instrument);
 
     return builder.build();
-  }
-
-  @Override
-  protected List<TypedPermitRequest> getRequiredQuotas() {
-    return ONE_API_KEY_MATCHING_ENGINE_REQUEST;
   }
 
   @NotThreadSafe

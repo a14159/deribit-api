@@ -5,10 +5,6 @@ import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.actor.IActorFactory;
 import io.contek.invoker.commons.actor.SimpleActorFactory;
 import io.contek.invoker.commons.actor.http.SimpleHttpClientFactory;
-import io.contek.invoker.commons.actor.ratelimit.IRateLimitQuotaInterceptor;
-import io.contek.invoker.commons.actor.ratelimit.LimiterManagers;
-import io.contek.invoker.commons.actor.ratelimit.RateLimitRule;
-import io.contek.invoker.commons.actor.ratelimit.TypedPermitRequest;
 import io.contek.invoker.commons.rest.RestContext;
 import io.contek.invoker.commons.websocket.WebSocketContext;
 import io.contek.invoker.deribit.api.rest.market.MarketRestApi;
@@ -17,17 +13,11 @@ import io.contek.invoker.deribit.api.websocket.market.MarketWebSocketApi;
 import io.contek.invoker.deribit.api.websocket.user.UserWebSocketApi;
 import io.contek.invoker.security.ApiKey;
 import io.contek.invoker.security.SimpleCredentialFactory;
-import io.contek.ursa.cache.LimiterManager;
 import is.fm.util.BaseEncoding;
 
-import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 import java.time.Duration;
-import java.util.List;
 
-import static io.contek.invoker.commons.actor.ratelimit.LimitType.API_KEY;
-import static io.contek.invoker.commons.actor.ratelimit.LimitType.IP;
-import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.*;
 import static io.contek.invoker.security.SecretKeyAlgorithm.HMAC_SHA256;
 
 @ThreadSafe
@@ -93,7 +83,7 @@ public final class ApiFactory {
   }
 
   public static ApiFactory fromContext(ApiContext context) {
-    return new ApiFactory(context, createActorFactory(context.getInterceptors()));
+    return new ApiFactory(context, createActorFactory());
   }
 
   public SelectingRestApi rest() {
@@ -104,13 +94,10 @@ public final class ApiFactory {
     return new SelectingWebSocketApi();
   }
 
-  private static SimpleActorFactory createActorFactory(
-      List<IRateLimitQuotaInterceptor> interceptors) {
+  private static SimpleActorFactory createActorFactory() {
     return SimpleActorFactory.newBuilder()
         .setCredentialFactory(createCredentialFactory())
         .setHttpClientFactory(SimpleHttpClientFactory.getInstance())
-//        .setRateLimitThrottleFactory(
-//            SimpleRateLimitThrottleFactory.create(createLimiterManager(), interceptors))
         .build();
   }
 
@@ -119,14 +106,6 @@ public final class ApiFactory {
         .setAlgorithm(HMAC_SHA256)
         .setEncoding(BaseEncoding.base16().lowerCase())
         .build();
-  }
-
-  private static LimiterManager createLimiterManager() {
-    return LimiterManagers.forRules(
-        API_KEY_MATCHING_ENGINE_REQUEST_RULE,
-        API_KEY_NON_MATCHING_ENGINE_REQUEST_RULE,
-        IP_NON_MATCHING_ENGINE_REQUEST_RULE,
-        IP_WEB_SOCKET_CONNECTION_RULE);
   }
 
   @ThreadSafe
@@ -163,55 +142,5 @@ public final class ApiFactory {
       IActor actor = actorFactory.create(apiKey, wsContext);
       return new UserWebSocketApi(actor, wsContext);
     }
-  }
-
-  @Immutable
-  public static final class RateLimits {
-
-    public static final RateLimitRule API_KEY_MATCHING_ENGINE_REQUEST_RULE =
-        RateLimitRule.newBuilder()
-            .setName("api_key_matching_engine_request_rule")
-            .setType(API_KEY) // per sub-account
-            .setMaxPermits(5)
-            .setResetPeriod(Duration.ofSeconds(1))
-            .build();
-
-    public static final RateLimitRule API_KEY_NON_MATCHING_ENGINE_REQUEST_RULE =
-        RateLimitRule.newBuilder()
-            .setName("api_key_non_matching_engine_request_rule")
-            .setType(API_KEY)
-            .setMaxPermits(20)
-            .setResetPeriod(Duration.ofSeconds(1))
-            .build();
-
-    public static final RateLimitRule IP_NON_MATCHING_ENGINE_REQUEST_RULE =
-        RateLimitRule.newBuilder()
-            .setName("ip_non_matching_engine_request_rule")
-            .setType(IP)
-            .setMaxPermits(20)
-            .setResetPeriod(Duration.ofSeconds(1))
-            .build();
-
-    public static final RateLimitRule IP_WEB_SOCKET_CONNECTION_RULE =
-        RateLimitRule.newBuilder()
-            .setName("ip_web_socket_connection_rule")
-            .setType(IP)
-            .setMaxPermits(1)
-            .setResetPeriod(Duration.ofSeconds(1))
-            .build();
-
-    public static final List<TypedPermitRequest> ONE_API_KEY_MATCHING_ENGINE_REQUEST =
-        List.of(API_KEY_MATCHING_ENGINE_REQUEST_RULE.forPermits(1));
-
-    public static final List<TypedPermitRequest> ONE_API_KEY_NON_MATCHING_ENGINE_REQUEST =
-        List.of(API_KEY_NON_MATCHING_ENGINE_REQUEST_RULE.forPermits(1));
-
-    public static final List<TypedPermitRequest> ONE_IP_NON_MATCHING_ENGINE_REQUEST =
-        List.of(IP_NON_MATCHING_ENGINE_REQUEST_RULE.forPermits(1));
-
-    public static final List<TypedPermitRequest> ONE_WEB_SOCKET_CONNECTION =
-        List.of(IP_WEB_SOCKET_CONNECTION_RULE.forPermits(1));
-
-    private RateLimits() {}
   }
 }

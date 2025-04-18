@@ -1,7 +1,6 @@
 package io.contek.invoker.deribit.api.websocket;
 
 import io.contek.invoker.commons.actor.IActor;
-import io.contek.invoker.commons.actor.ratelimit.TypedPermitRequest;
 import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 import io.contek.invoker.commons.websocket.BaseWebSocketApi;
 import io.contek.invoker.commons.websocket.WebSocketCall;
@@ -9,9 +8,7 @@ import io.contek.invoker.commons.websocket.WebSocketContext;
 import io.contek.invoker.security.ICredential;
 
 import javax.annotation.concurrent.ThreadSafe;
-import java.util.List;
 
-import static io.contek.invoker.deribit.api.ApiFactory.RateLimits.ONE_WEB_SOCKET_CONNECTION;
 
 @ThreadSafe
 public abstract class WebSocketApi extends BaseWebSocketApi {
@@ -43,11 +40,6 @@ public abstract class WebSocketApi extends BaseWebSocketApi {
 
   public WebSocketRequestIdGenerator getRequestIdGenerator() {
     return requestIdGenerator;
-  }
-
-  @Override
-  protected List<TypedPermitRequest> getRequiredQuotas() {
-    return ONE_WEB_SOCKET_CONNECTION;
   }
 
   @Override

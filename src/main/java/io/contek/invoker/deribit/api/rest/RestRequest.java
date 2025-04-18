@@ -2,7 +2,6 @@ package io.contek.invoker.deribit.api.rest;
 
 import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.actor.http.AnyHttpException;
-import io.contek.invoker.commons.actor.ratelimit.TypedPermitRequest;
 import io.contek.invoker.commons.rest.*;
 import io.contek.invoker.security.ICredential;
 import is.fm.util.BaseEncoding;
@@ -12,7 +11,6 @@ import is.fm.util.Escapers;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import java.time.Clock;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -37,8 +35,6 @@ public abstract class RestRequest<R> extends BaseRestRequest<R> {
   protected abstract String getEndpointPath();
 
   protected abstract RestParams getParams();
-
-  protected abstract List<TypedPermitRequest> getRequiredQuotas();
 
   @Override
   protected final RestCall createCall(ICredential credential) {
