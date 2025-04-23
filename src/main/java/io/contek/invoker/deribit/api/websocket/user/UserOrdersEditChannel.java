@@ -54,7 +54,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     loRequest.params.type = OrderTypeKeys._limit;
   }
 
-  public int placeLimitOrder(String market, String clientId, String side, BigDecimal price, BigDecimal qty) {
+  public int placeLimitOrder(String market, String clientId, String side, BigDecimal price, BigDecimal qty, boolean postOnly) {
     if (session == null) {
       log.warn("Trying to place a limit order but we don't have the session");
       return -1;
@@ -64,6 +64,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       loRequest.params.label = clientId;
       loRequest.params.price = price;
       loRequest.params.amount = qty;
+      loRequest.params.post_only = postOnly;
 
       loRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
       switch (side) {
