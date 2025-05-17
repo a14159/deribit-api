@@ -74,11 +74,25 @@ public abstract class RestRequest<R> extends BaseRestRequest<R> {
     String timestamp = Long.toString(clock.millis());
     String nonce = generateNounce();
     String uri = getEndpointPath() + paramsString;
-    String payload =
-        timestamp + "\n" + nonce + "\n" + method + "\n" + uri + "\n" + bodyString + "\n";
+    String payload = new StringBuilder(128)
+            .append(timestamp)
+            .append("\n")
+            .append(nonce).append("\n")
+            .append(method).append("\n")
+            .append(uri)
+            .append("\n")
+            .append(bodyString)
+            .append("\n").toString();
     String signature = credential.sign(payload);
-    String authorizationValue =
-        String.format("deri-hmac-sha256 id=%s,ts=%s,sig=%s,nonce=%s", clientId, timestamp, signature, nonce);
+    String authorizationValue = new StringBuilder(128)
+            .append("deri-hmac-sha256 id=")
+            .append(clientId)
+            .append(",ts=")
+            .append(timestamp)
+            .append(",sig=")
+            .append(signature)
+            .append(",nonce=")
+            .append(nonce).toString();
     return Map.of("Authorization", authorizationValue);
   }
 

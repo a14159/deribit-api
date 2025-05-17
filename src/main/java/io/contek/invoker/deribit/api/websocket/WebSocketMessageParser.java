@@ -54,7 +54,7 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
       type = pendingRequests.remove(id);
     }
     if (type == null) {
-      throw new IllegalStateException(format("Expected response type not found: %d", id));
+      throw new IllegalStateException("Expected response type not found: " + id);
     }
     return obj.toJavaObject(type);
   }
