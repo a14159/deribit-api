@@ -16,8 +16,6 @@ import io.contek.invoker.deribit.api.websocket.user.*;
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.Map;
 
-import static java.lang.String.format;
-
 @ThreadSafe
 final class WebSocketMessageParser extends WebSocketTextMessageParser {
 
