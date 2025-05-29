@@ -1,6 +1,6 @@
 package io.contek.invoker.deribit.api.websocket.user;
 
-import io.contek.invoker.deribit.api.common._Order;
+import io.contek.invoker.deribit.api.common._LightOrder;
 import io.contek.invoker.deribit.api.websocket.WebSocketChannelId;
 import io.contek.invoker.deribit.api.websocket.WebSocketRequestIdGenerator;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketSingleChannelMessage;
@@ -44,5 +44,5 @@ public final class UserOrdersChannel
   public static final class Message extends WebSocketSingleChannelMessage<Data> {}
 
   @NotThreadSafe
-  public static final class Data extends _Order {}
+  public static final class Data extends _LightOrder {}
 }

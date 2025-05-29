@@ -1,6 +1,6 @@
 package io.contek.invoker.deribit.api.websocket.user;
 
-import io.contek.invoker.deribit.api.common._UserTrade;
+import io.contek.invoker.deribit.api.common._LightUserTrade;
 import io.contek.invoker.deribit.api.websocket.WebSocketChannelId;
 import io.contek.invoker.deribit.api.websocket.WebSocketRequestIdGenerator;
 import io.contek.invoker.deribit.api.websocket.common.WebSocketSingleChannelMessage;
@@ -45,5 +45,5 @@ public final class UserTradesChannel
   public static final class Message extends WebSocketSingleChannelMessage<Data> {}
 
   @NotThreadSafe
-  public static final class Data extends ArrayList<_UserTrade> {}
+  public static final class Data extends ArrayList<_LightUserTrade> {}
 }

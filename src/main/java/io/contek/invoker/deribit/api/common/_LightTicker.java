@@ -13,7 +13,7 @@ public class _LightTicker {
   public BigDecimal current_funding;
   public BigDecimal funding_8h;
 //  public _Greek greeks;
-  public Double index_price;
+//  public Double index_price;
   public String instrument_name;
 //  public Double interest_rate;
   public BigDecimal last_price;
@@ -24,6 +24,6 @@ public class _LightTicker {
 //  public Double settlement_price;
   public String state;
 //  public _Stats stats;
-  public Long timestamp;
+  public long timestamp;
   public long traceNano = System.nanoTime();
 }

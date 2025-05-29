@@ -4,7 +4,7 @@ import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.rest.RestContext;
 import io.contek.invoker.commons.rest.RestMethod;
 import io.contek.invoker.commons.rest.RestParams;
-import io.contek.invoker.deribit.api.common._UserTrades;
+import io.contek.invoker.deribit.api.common._LightUserTrades;
 import io.contek.invoker.deribit.api.rest.common.RestResponse;
 
 import javax.annotation.concurrent.NotThreadSafe;
@@ -68,5 +68,5 @@ public final class GetUserTradesByInstrumentAndTime
   }
 
   @NotThreadSafe
-  public static final class Response extends RestResponse<_UserTrades> {}
+  public static final class Response extends RestResponse<_LightUserTrades> {}
 }
