@@ -18,7 +18,7 @@ public class _LightUserTrade {
   public String order_type;
   public String order_id;
   public String matching_id;
-  public BigDecimal mark_price;
+//  public BigDecimal mark_price;
   public String liquidity;
   public String instrument_name;
 //  public Double index_price;
