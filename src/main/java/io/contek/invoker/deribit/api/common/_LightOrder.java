@@ -12,7 +12,7 @@ public class _LightOrder {
   public BigDecimal amount;
 //  public Boolean web;
   public String instrument_name;
-  public String advanced;
+//  public String advanced;
 //  public Boolean triggered;
   public Boolean block_trade;
   public String original_order_type;
@@ -27,7 +27,7 @@ public class _LightOrder {
 //  public Double average_price;
   public String order_id;
   public Boolean reduce_only;
-  public BigDecimal commission;
+//  public BigDecimal commission;
 //  public String app_name;
 //  public Double stop_price;
   public String label;
