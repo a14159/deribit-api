@@ -14,8 +14,8 @@ public class _LightOrder {
   public String instrument_name;
 //  public String advanced;
 //  public Boolean triggered;
-  public Boolean block_trade;
-  public String original_order_type;
+//  public Boolean block_trade;
+//  public String original_order_type;
   public BigDecimal price;
   public String time_in_force;
 //  public Boolean auto_replaced;

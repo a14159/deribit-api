@@ -12,12 +12,12 @@ public class _LightUserTrade {
   public int tick_direction;
   public String state;
   public boolean self_trade;
-  public boolean reduce_only;
+//  public boolean reduce_only;
   public BigDecimal price;
-  public boolean post_only;
+//  public boolean post_only;
   public String order_type;
   public String order_id;
-  public String matching_id;
+//  public String matching_id;
 //  public BigDecimal mark_price;
   public String liquidity;
   public String instrument_name;
@@ -30,7 +30,7 @@ public class _LightUserTrade {
   public String block_trade_id;
 //  public Double iv;
   public String label;
-  public String liquidation;
+//  public String liquidation;
 //  public Double profit_loss;
 //  public Double stop_price;
 //  public String trigger;
