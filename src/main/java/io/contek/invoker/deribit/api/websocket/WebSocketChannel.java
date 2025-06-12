@@ -45,7 +45,7 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
 
       WebSocketChannelId<Message> id = getId();
       SubscriptionParams params = new SubscriptionParams();
-      params.channels = List.of(id.getChannel());
+      params.channels = List.of(id.getValue());
 
       WebSocketRequest<SubscriptionParams> request = new WebSocketRequest<>();
       request.id = requestIdGenerator.getNextRequestId(WebSocketSubscriptionConfirmation.class);
@@ -66,7 +66,7 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
 
       WebSocketChannelId<Message> id = getId();
       SubscriptionParams params = new SubscriptionParams();
-      params.channels = List.of(id.getChannel());
+      params.channels = List.of(id.getValue());
 
       WebSocketRequest<SubscriptionParams> request = new WebSocketRequest<>();
       request.id = requestIdGenerator.getNextRequestId(WebSocketSubscriptionConfirmation.class);
