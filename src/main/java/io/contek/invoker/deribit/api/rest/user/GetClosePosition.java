@@ -23,23 +23,23 @@ public final class GetClosePosition extends UserRestRequest<GetClosePosition.Res
     super(actor, context);
   }
 
-  public final GetClosePosition setInstrumentName(String instrument_name) {
+  public GetClosePosition setInstrumentName(String instrument_name) {
     this.instrument_name = instrument_name;
     return this;
   }
 
-  public final GetClosePosition setType(String type) {
+  public GetClosePosition setType(String type) {
     this.type = type;
     return this;
   }
 
-  public final GetClosePosition setPrice(double price) {
+  public GetClosePosition setPrice(double price) {
     this.price = price;
     return this;
   }
 
   @Override
-  protected final RestMethod getMethod() {
+  protected RestMethod getMethod() {
     return GET;
   }
 
@@ -49,7 +49,7 @@ public final class GetClosePosition extends UserRestRequest<GetClosePosition.Res
   }
 
   @Override
-  protected final RestParams getParams() {
+  protected RestParams getParams() {
     RestParams.Builder builder = RestParams.newBuilder();
 
     requireNonNull(instrument_name);
@@ -66,7 +66,7 @@ public final class GetClosePosition extends UserRestRequest<GetClosePosition.Res
   }
 
   @Override
-  protected final Class<Response> getResponseType() {
+  protected Class<Response> getResponseType() {
     return Response.class;
   }
 

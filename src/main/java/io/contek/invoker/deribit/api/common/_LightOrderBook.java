@@ -8,10 +8,10 @@ public class _LightOrderBook {
 
 //  public Double ask_iv; // use -1 to represent empty maybe?
   public List<_OrderBookLevel> asks;
-  public double best_ask_amount;
-  public double best_ask_price;
-  public double best_bid_amount;
-  public double best_bid_price;
+//  public double best_ask_amount;
+//  public double best_ask_price;
+//  public double best_bid_amount;
+//  public double best_bid_price;
 //  public Double bid_iv;
   public List<_OrderBookLevel> bids;
 //  public Double current_funding;
