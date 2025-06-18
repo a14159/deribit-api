@@ -72,7 +72,7 @@ public abstract class RestRequest<R> extends BaseRestRequest<R> {
     }
     String clientId = credential.getApiKeyId();
     String timestamp = Long.toString(clock.millis());
-    String nonce = generateNounce();
+    String nonce = generateNonce();
     String uri = getEndpointPath() + paramsString;
     String payload = new StringBuilder(128)
             .append(timestamp)
@@ -99,9 +99,11 @@ public abstract class RestRequest<R> extends BaseRestRequest<R> {
   private static final Random rnd = new Random();
   private static final byte[] randomBytes = new byte[8];
 
-  private static String generateNounce() {
-    rnd.nextBytes(randomBytes);
-    return ENCODING.encode(randomBytes);
+  private static String generateNonce() {
+      synchronized (randomBytes) {
+          rnd.nextBytes(randomBytes);
+          return ENCODING.encode(randomBytes);
+      }
   }
 
   private String buildParamsString() {
