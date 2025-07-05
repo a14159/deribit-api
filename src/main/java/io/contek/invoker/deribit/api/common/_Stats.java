@@ -7,4 +7,5 @@ public class _Stats {
   public Double low;
   public Double price_change;
   public BigDecimal volume;
+  public BigDecimal volume_usd;
 }
