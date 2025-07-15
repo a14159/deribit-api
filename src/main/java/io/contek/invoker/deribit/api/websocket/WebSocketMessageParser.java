@@ -12,14 +12,15 @@ import io.contek.invoker.deribit.api.websocket.common.constants.WebSocketChannel
 import io.contek.invoker.deribit.api.websocket.market.BookSnapshotChannel;
 import io.contek.invoker.deribit.api.websocket.market.TradesChannel;
 import io.contek.invoker.deribit.api.websocket.user.*;
+import is.fm.util.ExpiringIntMap;
 
 import javax.annotation.concurrent.ThreadSafe;
-import java.util.Map;
 
 @ThreadSafe
 final class WebSocketMessageParser extends WebSocketTextMessageParser {
 
-  private final Map<Integer, Class<? extends WebSocketResponse<?>>> pendingRequests = new ExpiringMap<>(100);
+//  private final Map<Integer, Class<? extends WebSocketResponse<?>>> pendingRequests = new ExpiringMap<>(100);
+  private final ExpiringIntMap<Class<? extends WebSocketResponse<?>>> pendingRequests = new ExpiringIntMap<>(33);
 
   public void register(Integer id, Class<? extends WebSocketResponse<?>> type) {
     synchronized (pendingRequests) {
