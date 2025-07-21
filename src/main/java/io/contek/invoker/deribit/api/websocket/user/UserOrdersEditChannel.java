@@ -84,7 +84,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     editRequest.method = "private/edit";
   }
 
-  public int editLimitOrderById(String orderId, @Nullable BigDecimal price, BigDecimal qty) {
+  public int editLimitOrderById(String orderId, @Nullable BigDecimal price, BigDecimal qty, boolean postOnly) {
     if (session == null) {
       log.warn("Trying to edit a limit order by order id but we don't have the session");
       return -1;
@@ -93,6 +93,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       editRequest.params.order_id = orderId;
       editRequest.params.price = price;
       editRequest.params.amount = qty;
+      editRequest.params.post_only = postOnly;
 
       editRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
 
