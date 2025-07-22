@@ -54,7 +54,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     loRequest.params.type = OrderTypeKeys._limit;
   }
 
-  public int placeLimitOrder(String market, String clientId, String side, BigDecimal price, BigDecimal qty, boolean postOnly) {
+  public int placeLimitOrder(String market, String clientId, String side, BigDecimal price, BigDecimal amount, BigDecimal contracts, boolean postOnly) {
     if (session == null) {
       log.warn("Trying to place a limit order but we don't have the session");
       return -1;
@@ -63,7 +63,8 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       loRequest.params.instrument_name = market;
       loRequest.params.label = clientId;
       loRequest.params.price = price;
-      loRequest.params.amount = qty;
+      loRequest.params.amount = amount;
+      loRequest.params.contracts = contracts;
       loRequest.params.post_only = postOnly;
 
       loRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
@@ -84,7 +85,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     editRequest.method = "private/edit";
   }
 
-  public int editLimitOrderById(String orderId, @Nullable BigDecimal price, BigDecimal qty, boolean postOnly) {
+  public int editLimitOrderById(String orderId, @Nullable BigDecimal price, BigDecimal amount, BigDecimal contracts, boolean postOnly) {
     if (session == null) {
       log.warn("Trying to edit a limit order by order id but we don't have the session");
       return -1;
@@ -92,7 +93,8 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     synchronized (editRequest) {
       editRequest.params.order_id = orderId;
       editRequest.params.price = price;
-      editRequest.params.amount = qty;
+      editRequest.params.amount = amount;
+      editRequest.params.contracts = contracts;
       editRequest.params.post_only = postOnly;
 
       editRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
@@ -108,7 +110,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     moRequest.params.type = OrderTypeKeys._market;
   }
 
-  public int placeMarketOrder(String market, String clientId, String side, BigDecimal qty) {
+  public int placeMarketOrder(String market, String clientId, String side, BigDecimal amount, BigDecimal contracts) {
     if (session == null) {
       log.warn("Trying to place a market order but we don't have the session");
       return -1;
@@ -116,7 +118,8 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     synchronized (moRequest) {
       moRequest.params.instrument_name = market;
       moRequest.params.label = clientId;
-      moRequest.params.amount = qty;
+      moRequest.params.amount = amount;
+      moRequest.params.contracts = contracts;
 
       moRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
       switch (side) {

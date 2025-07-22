@@ -18,6 +18,7 @@ public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrd
 
   private String instrument_name;
   private BigDecimal amount;
+  private BigDecimal contracts;
   private String type;
   private String label;
   private BigDecimal price;
@@ -42,6 +43,11 @@ public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrd
 
   public final BasePlaceOrderRequest setAmount(BigDecimal amount) {
     this.amount = amount;
+    return this;
+  }
+
+  public final BasePlaceOrderRequest setContracts(BigDecimal contracts) {
+    this.contracts = contracts;
     return this;
   }
 
@@ -120,8 +126,16 @@ public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrd
     requireNonNull(instrument_name);
     builder.add("instrument_name", instrument_name);
 
-    requireNonNull(amount);
-    builder.add("amount", amount.toPlainString());
+    if (amount == null && contracts == null)
+      throw new IllegalArgumentException("One of the 'amount' or 'contracts' params must be set");
+
+    if (amount != null) {
+        builder.add("amount", amount.toPlainString());
+    }
+
+    if (contracts != null) {
+      builder.add("contracts", contracts.toPlainString());
+    }
 
     requireNonNull(type);
     builder.add("type", type);
