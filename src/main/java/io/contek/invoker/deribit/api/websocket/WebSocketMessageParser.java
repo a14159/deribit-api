@@ -64,11 +64,11 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
     if (channel.startsWith(WebSocketChannelKeys._user_trades)) {
       return obj.toJavaObject(UserTradesChannel.Message.class);
     }
-    if (channel.startsWith(WebSocketChannelKeys._tickers)) {
-      return obj.toJavaObject(UserTickersChannel.Message.class);
-    }
     if (channel.startsWith(WebSocketChannelKeys._user_orders)) {
       return obj.toJavaObject(UserOrdersChannel.Message.class);
+    }
+    if (channel.startsWith(WebSocketChannelKeys._tickers)) {
+      return obj.toJavaObject(UserTickersChannel.Message.class);
     }
     if (channel.startsWith(WebSocketChannelKeys._book)) {
       JSONObject data = params.getJSONObject("data");

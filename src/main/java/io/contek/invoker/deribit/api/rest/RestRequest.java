@@ -100,10 +100,10 @@ public abstract class RestRequest<R> extends BaseRestRequest<R> {
   private static final byte[] randomBytes = new byte[8];
 
   private static String generateNonce() {
-      synchronized (randomBytes) {
-          rnd.nextBytes(randomBytes);
-          return ENCODING.encode(randomBytes);
-      }
+    synchronized (randomBytes) {
+      rnd.nextBytes(randomBytes);
+      return ENCODING.encode(randomBytes);
+    }
   }
 
   private String buildParamsString() {
