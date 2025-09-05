@@ -1,7 +1,6 @@
 package io.contek.invoker.deribit.api.common;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import java.math.BigDecimal;
 import java.util.List;
 
 @NotThreadSafe
@@ -15,7 +14,7 @@ public class _AccountSummary {
   public Double options_value;
   public String username;
   public _Limits limits;
-  public BigDecimal equity;
+  public Double equity;
   public Double futures_pl;
   public List<_Fee> fees;
   public Double options_session_upl;
@@ -38,14 +37,14 @@ public class _AccountSummary {
   public Boolean interuser_transfers_enabled;
   public Double futures_session_upl;
   public Double options_session_rpl;
-  public BigDecimal available_funds;
+  public Double available_funds;
   public String email;
   public Long creation_timestamp;
   public Double session_upl;
   public Double total_pl;
   public Double options_delta;
-  public BigDecimal balance;
+  public Double balance;
   public Double projected_initial_margin;
   public String deposit_address;
-  public BigDecimal total_equity_usd;
+  public Double total_equity_usd;
 }

@@ -6,7 +6,7 @@
 
     <groupId>io.contek.invoker</groupId>
     <artifactId>invoker-deribit-api</artifactId>
-    <version>3.6.19-head</version>
+    <version>3.6.19-head-double</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

@@ -1,7 +1,6 @@
 package io.contek.invoker.deribit.api.common;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import java.math.BigDecimal;
 
 @NotThreadSafe
 public class _LightUserTrade {
@@ -13,19 +12,19 @@ public class _LightUserTrade {
   public String state;
   public boolean self_trade;
 //  public boolean reduce_only;
-  public BigDecimal price;
+  public Double price;
 //  public boolean post_only;
   public String order_type;
   public String order_id;
 //  public String matching_id;
-//  public BigDecimal mark_price;
+//  public Double mark_price;
   public String liquidity;
   public String instrument_name;
 //  public Double index_price;
   public String fee_currency;
-  public BigDecimal fee;
+  public Double fee;
   public String direction;
-  public BigDecimal amount;
+  public Double amount;
 //  public String advanced;
   public String block_trade_id;
 //  public Double iv;

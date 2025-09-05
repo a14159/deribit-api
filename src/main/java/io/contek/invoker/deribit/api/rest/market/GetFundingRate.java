@@ -6,7 +6,6 @@ import io.contek.invoker.commons.rest.RestParams;
 import io.contek.invoker.deribit.api.rest.common.RestResponse;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import java.math.BigDecimal;
 
 import static java.util.Objects.requireNonNull;
 
@@ -59,5 +58,5 @@ public final class GetFundingRate extends MarketRestRequest<GetFundingRate.Respo
   }
 
   @NotThreadSafe
-  public static final class Response extends RestResponse<BigDecimal> {}
+  public static final class Response extends RestResponse<Double> {}
 }
