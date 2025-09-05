@@ -16,7 +16,6 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;
-import java.math.BigDecimal;
 
 import static io.contek.invoker.commons.websocket.SubscriptionState.*;
 
@@ -54,7 +53,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     loRequest.params.type = OrderTypeKeys._limit;
   }
 
-  public int placeLimitOrder(String market, String clientId, String side, BigDecimal price, BigDecimal amount, BigDecimal contracts, boolean postOnly) {
+  public int placeLimitOrder(String market, String clientId, String side, String price, String amount, String contracts, boolean postOnly) {
     if (session == null) {
       log.warn("Trying to place a limit order but we don't have the session");
       return -1;
@@ -85,7 +84,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     editRequest.method = "private/edit";
   }
 
-  public int editLimitOrderById(String orderId, @Nullable BigDecimal price, BigDecimal amount, BigDecimal contracts, boolean postOnly) {
+  public int editLimitOrderById(String orderId, @Nullable String price, String amount, String contracts, boolean postOnly) {
     if (session == null) {
       log.warn("Trying to edit a limit order by order id but we don't have the session");
       return -1;
@@ -110,7 +109,7 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
     moRequest.params.type = OrderTypeKeys._market;
   }
 
-  public int placeMarketOrder(String market, String clientId, String side, BigDecimal amount, BigDecimal contracts) {
+  public int placeMarketOrder(String market, String clientId, String side, String amount, String contracts) {
     if (session == null) {
       log.warn("Trying to place a market order but we don't have the session");
       return -1;

@@ -8,7 +8,6 @@ import io.contek.invoker.deribit.api.common._PlaceOrderResponse;
 import io.contek.invoker.deribit.api.rest.common.RestResponse;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import java.math.BigDecimal;
 
 import static io.contek.invoker.commons.rest.RestMethod.GET;
 import static java.util.Objects.requireNonNull;
@@ -17,17 +16,17 @@ import static java.util.Objects.requireNonNull;
 public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrderRequest.Response> {
 
   private String instrument_name;
-  private BigDecimal amount;
-  private BigDecimal contracts;
+  private String amount;
+  private String contracts;
   private String type;
   private String label;
-  private BigDecimal price;
+  private String price;
   private String time_in_force;
   private Double max_show;
   private Boolean post_only;
   private Boolean reject_post_only;
   private Boolean reduce_only;
-  private BigDecimal stop_price;
+  private String stop_price;
   private String trigger;
   private String advanced;
   private Boolean mmp;
@@ -41,12 +40,12 @@ public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrd
     return this;
   }
 
-  public final BasePlaceOrderRequest setAmount(BigDecimal amount) {
+  public final BasePlaceOrderRequest setAmount(String amount) {
     this.amount = amount;
     return this;
   }
 
-  public final BasePlaceOrderRequest setContracts(BigDecimal contracts) {
+  public final BasePlaceOrderRequest setContracts(String contracts) {
     this.contracts = contracts;
     return this;
   }
@@ -61,7 +60,7 @@ public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrd
     return this;
   }
 
-  public final BasePlaceOrderRequest setPrice(BigDecimal price) {
+  public final BasePlaceOrderRequest setPrice(String price) {
     this.price = price;
     return this;
   }
@@ -91,7 +90,7 @@ public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrd
     return this;
   }
 
-  public final BasePlaceOrderRequest setStopPrice(BigDecimal stopPrice) {
+  public final BasePlaceOrderRequest setStopPrice(String stopPrice) {
     this.stop_price = stopPrice;
     return this;
   }
@@ -130,11 +129,11 @@ public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrd
       throw new IllegalArgumentException("One of the 'amount' or 'contracts' params must be set");
 
     if (amount != null) {
-        builder.add("amount", amount.toPlainString());
+        builder.add("amount", amount);
     }
 
     if (contracts != null) {
-      builder.add("contracts", contracts.toPlainString());
+      builder.add("contracts", contracts);
     }
 
     requireNonNull(type);
@@ -145,7 +144,7 @@ public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrd
     }
 
     if (price != null) {
-      builder.add("price", price.toPlainString());
+      builder.add("price", price);
     }
 
     if (time_in_force != null) {
@@ -169,7 +168,7 @@ public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrd
     }
 
     if (stop_price != null) {
-      builder.add("stop_price", stop_price.toPlainString());
+      builder.add("stop_price", stop_price);
     }
 
     if (trigger != null) {

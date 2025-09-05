@@ -8,7 +8,6 @@ import io.contek.invoker.deribit.api.common._PlaceOrderResponse;
 import io.contek.invoker.deribit.api.rest.common.RestResponse;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import java.math.BigDecimal;
 
 import static io.contek.invoker.commons.rest.RestMethod.GET;
 import static java.util.Objects.requireNonNull;
@@ -17,9 +16,9 @@ import static java.util.Objects.requireNonNull;
 public class GetEditOrder extends UserRestRequest<GetEditOrder.Response> {
 
   private String orderId;
-  private BigDecimal amount;
-  private BigDecimal contracts;
-  private BigDecimal price;
+  private String amount;
+  private String contracts;
+  private String price;
   private Boolean post_only;
   private Boolean reject_post_only;
   private Boolean reduce_only;
@@ -38,17 +37,17 @@ public class GetEditOrder extends UserRestRequest<GetEditOrder.Response> {
     return this;
   }
 
-  public final GetEditOrder setAmount(BigDecimal amount) {
+  public final GetEditOrder setAmount(String amount) {
     this.amount = amount;
     return this;
   }
 
-  public final GetEditOrder setContracts(BigDecimal contracts) {
+  public final GetEditOrder setContracts(String contracts) {
     this.contracts = contracts;
     return this;
   }
 
-  public final GetEditOrder setPrice(BigDecimal price) {
+  public final GetEditOrder setPrice(String price) {
     this.price = price;
     return this;
   }
@@ -106,15 +105,15 @@ public class GetEditOrder extends UserRestRequest<GetEditOrder.Response> {
     builder.add("order_id", orderId);
 
     if (amount != null) {
-      builder.add("amount", amount.toPlainString());
+      builder.add("amount", amount);
     }
 
     if (contracts != null) {
-      builder.add("contracts", contracts.toPlainString());
+      builder.add("contracts", contracts);
     }
 
     if (price != null) {
-      builder.add("price", price.toPlainString());
+      builder.add("price", price);
     }
 
     if (post_only != null) {
