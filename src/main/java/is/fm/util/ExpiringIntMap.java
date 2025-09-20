@@ -33,24 +33,27 @@ public final class ExpiringIntMap<T> {
         int bucket = key & mask;
         int index = bucket;
 
+        final int[] localKeys = keys;
+        final int[] localKeysCnt = keysCnt;
+        final T[] localVals = values;
         for (;;) {
-            if (values[index] == null) {
+            if (localVals[index] == null) {
                 if (removeEldestEntry()) {
                     return put(key, value);
                 }
 
                 // Found empty slot, use it
-                keys[index] = key;
-                values[index] = value;
-                keysCnt[index] = ++seen;
+                localKeys[index] = key;
+                localVals[index] = value;
+                localKeysCnt[index] = ++seen;
                 size++;
                 return null;
             }
-            if (keys[index] == key) {
+            if (localKeys[index] == key) {
                 // Found existing entry with this key, just replace the value
-                T previousValue = values[index];
-                values[index] = value;
-                keysCnt[index] = ++seen;
+                T previousValue = localVals[index];
+                localVals[index] = value;
+                localKeysCnt[index] = ++seen;
                 return previousValue;
             }
 
@@ -66,8 +69,10 @@ public final class ExpiringIntMap<T> {
         if (size >= maxCapacity) {
             final int capacity = keys.length;
             final int maxAge = seen - maxCapacity + 1;
+
+            int[] localKeysCnt = keysCnt;
             for (int i = 0; i < capacity; i++) {
-                if (keysCnt[i] != 0 && keysCnt[i] <= maxAge) {
+                if (localKeysCnt[i] != 0 && localKeysCnt[i] <= maxAge) {
                     remove(keys[i]);
                     seen++; // remove will decrement seen we don't need to do it here
                     return true;
@@ -82,36 +87,39 @@ public final class ExpiringIntMap<T> {
         int bucket = key & mask;
         int index = bucket;
 
+        final int[] localKeys = keys;
+        final int[] localKeysCnt = keysCnt;
+        final T[] localVals = values;
         for (;;) {
-            if (values[index] == null) {
+            if (localVals[index] == null) {
                 // slot is available, so no chance that this value exists anywhere in the map.
                 return null;
             }
-            if (key == keys[index]) {
-                T rez = values[index];
-                values[index] = null;
-                keys[index] = 0;
-                keysCnt[index] = 0;
+            if (key == localKeys[index]) {
+                T rez = localVals[index];
+                localVals[index] = null;
+                localKeys[index] = 0;
+                localKeysCnt[index] = 0;
                 seen--;
                 size--;
 
                 // Knuth Section 6.4 Algorithm R, also used by the JDK's IdentityHashMap.
                 int nextFree = index;
                 int i = (index + 1) & mask;
-                for (T value = values[i]; value != null; value = values[i = (i + 1) & mask]) {
-                    int key1 = keys[i];
-                    int keyCnt1 = keysCnt[i];
+                for (T value = localVals[i]; value != null; value = localVals[i = (i + 1) & mask]) {
+                    int key1 = localKeys[i];
+                    int keyCnt1 = localKeysCnt[i];
                     int bucket1 = key1 & mask;
                     if (i < bucket1 && (bucket1 <= nextFree || nextFree <= i) ||
                             bucket1 <= nextFree && nextFree <= i) {
                         // Move the displaced entry "back" to the first available position.
-                        keys[nextFree] = key1;
-                        keysCnt[nextFree] = keyCnt1;
-                        values[nextFree] = value;
+                        localKeys[nextFree] = key1;
+                        localKeysCnt[nextFree] = keyCnt1;
+                        localVals[nextFree] = value;
                         // Put the first entry after the displaced entry
-                        keys[i] = 0;
-                        keysCnt[i] = 0;
-                        values[i] = null;
+                        localKeys[i] = 0;
+                        localKeysCnt[i] = 0;
+                        localVals[i] = null;
                         nextFree = i;
                     }
                 }
@@ -129,13 +137,16 @@ public final class ExpiringIntMap<T> {
     public T get(int key) {
         int bucket = key & mask;
         int index = bucket;
+
+        final int[] localKeys = keys;
+        final T[] localVals = values;
         for (;;) {
-            if (values[index] == null) {
+            if (localVals[index] == null) {
                 // slot is available, so no chance that this value exists anywhere in the map.
                 return null;
             }
-            if (key == keys[index]) {
-                return values[index];
+            if (key == localKeys[index]) {
+                return localVals[index];
             }
 
             // Conflict, keep probing until we reach the starting point
