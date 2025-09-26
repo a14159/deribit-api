@@ -8,7 +8,7 @@ public class _LightUserTrade {
   public long trade_seq;
   public String trade_id;
   public long timestamp;
-  public int tick_direction;
+//  public int tick_direction;
   public String state;
   public boolean self_trade;
 //  public boolean reduce_only;
@@ -26,7 +26,7 @@ public class _LightUserTrade {
   public String direction;
   public Double amount;
 //  public String advanced;
-  public String block_trade_id;
+//  public String block_trade_id;
 //  public Double iv;
   public String label;
 //  public String liquidation;
