@@ -94,7 +94,13 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       editRequest.params.price = price;
       editRequest.params.amount = amount;
       editRequest.params.contracts = contracts;
-      editRequest.params.post_only = postOnly;
+      if (postOnly) {
+          editRequest.params.post_only = postOnly;
+          editRequest.params.time_in_force = "good_til_cancelled";
+      } else {
+          editRequest.params.post_only = null;
+          editRequest.params.time_in_force = null;
+      }
 
       editRequest.id = idGenerator.getNextRequestId(PlaceOrderResponse.class);
 

@@ -8,4 +8,5 @@ public class EditOrderByIdParams extends Params {
   public String price;
   public Boolean post_only;
   public Boolean reduce_only;
+  public String time_in_force = "good_til_cancelled";
 }
