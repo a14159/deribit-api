@@ -5,4 +5,7 @@ import java.util.ArrayList;
 
 @NotThreadSafe
 public class _OrderBookLevelUpdate extends ArrayList<String> {
+    public _OrderBookLevelUpdate() {
+        super(3);
+    }
 }

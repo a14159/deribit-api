@@ -7,13 +7,13 @@ import java.util.List;
 public class _OrderBook {
 
   public Double ask_iv; // use -1 to represent empty maybe?
-  public List<_OrderBookLevel> asks;
+  public _OrderBookSide asks;
   public Double best_ask_amount;
   public Double best_ask_price;
   public Double best_bid_amount;
   public Double best_bid_price;
   public Double bid_iv;
-  public List<_OrderBookLevel> bids;
+  public _OrderBookSide bids;
   public Double current_funding;
   public Double delivery_price;
   public Double funding_8h;
