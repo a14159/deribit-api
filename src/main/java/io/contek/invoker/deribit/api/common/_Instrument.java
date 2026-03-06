@@ -9,6 +9,7 @@ public class _Instrument {
   public String quote_currency;
   public String instrument_name;
   public int instrument_id;
+  public String instrument_type;
   public String block_trade_commission;
   public Double contract_size;
   public Long creation_timestamp;
