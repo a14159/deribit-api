@@ -52,6 +52,26 @@ public final class ApiFactory {
           .setWebSocketContext(WebSocketContext.forBaseUrl("ws://193.58.254.1:8022", Duration.ofMillis(0)))
           .build();
 
+  public static final ApiContext CROSS_CONTEXT2 =
+      ApiContext.newBuilder()
+          .setRestContext(RestContext.newBuilder().setBaseUrl("http://193.58.254.2:8021")
+              .setConnectionTimeout(Duration.ofMillis(1000))
+              .setReadTimeout(Duration.ofMillis(500))
+              .setWriteTimeout(Duration.ofMillis(500))
+          )
+          .setWebSocketContext(WebSocketContext.forBaseUrl("ws://193.58.254.2:8022", Duration.ofMillis(0)))
+          .build();
+
+  public static final ApiContext CROSS_CONTEXT3 =
+      ApiContext.newBuilder()
+          .setRestContext(RestContext.newBuilder().setBaseUrl("http://193.58.254.3:8021")
+              .setConnectionTimeout(Duration.ofMillis(1000))
+              .setReadTimeout(Duration.ofMillis(500))
+              .setWriteTimeout(Duration.ofMillis(500))
+          )
+          .setWebSocketContext(WebSocketContext.forBaseUrl("ws://193.58.254.3:8022", Duration.ofMillis(0)))
+          .build();
+
   public static final ApiContext TEST_NET_CONTEXT =
       ApiContext.newBuilder()
           .setRestContext(RestContext.forBaseUrl("https://test.deribit.com"))
@@ -76,6 +96,14 @@ public final class ApiFactory {
 
   public static ApiFactory getDirectNet() {
     return fromContext(CROSS_CONTEXT);
+  }
+
+  public static ApiFactory getDirectNet2() {
+    return fromContext(CROSS_CONTEXT2);
+  }
+
+  public static ApiFactory getDirectNet3() {
+    return fromContext(CROSS_CONTEXT3);
   }
 
   public static ApiFactory getTestNet() {
