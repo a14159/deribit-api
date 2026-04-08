@@ -34,12 +34,30 @@ public final class ApiFactory {
 
   public static final ApiContext GATEWAY_CONTEXT =
       ApiContext.newBuilder()
-          .setRestContext(RestContext.newBuilder().setBaseUrl("https://gateway.deribit.com")
+          .setRestContext(RestContext.newBuilder().setBaseUrl("http://gateway.deribit.com:8021")
               .setConnectionTimeout(Duration.ofMillis(1000))
               .setReadTimeout(Duration.ofMillis(500))
               .setWriteTimeout(Duration.ofMillis(500))
           )
-          .setWebSocketContext(WebSocketContext.forBaseUrl("wss://gateway.deribit.com", Duration.ofMillis(0)))
+          .setWebSocketContext(WebSocketContext.forBaseUrl("ws://gateway.deribit.com:8022", Duration.ofMillis(0)))
+          .build();
+  public static final ApiContext GATEWAY_CONTEXT2 =
+      ApiContext.newBuilder()
+          .setRestContext(RestContext.newBuilder().setBaseUrl("http://gateway.deribit.com:28021")
+                .setConnectionTimeout(Duration.ofMillis(1000))
+                .setReadTimeout(Duration.ofMillis(500))
+                .setWriteTimeout(Duration.ofMillis(500))
+          )
+          .setWebSocketContext(WebSocketContext.forBaseUrl("ws://gateway.deribit.com:28022", Duration.ofMillis(0)))
+          .build();
+  public static final ApiContext GATEWAY_CONTEXT3 =
+      ApiContext.newBuilder()
+          .setRestContext(RestContext.newBuilder().setBaseUrl("http://gateway.deribit.com:38021")
+                .setConnectionTimeout(Duration.ofMillis(1000))
+                .setReadTimeout(Duration.ofMillis(500))
+                .setWriteTimeout(Duration.ofMillis(500))
+          )
+          .setWebSocketContext(WebSocketContext.forBaseUrl("ws://gateway.deribit.com:38022", Duration.ofMillis(0)))
           .build();
 
   public static final ApiContext CROSS_CONTEXT =
@@ -92,6 +110,14 @@ public final class ApiFactory {
 
   public static ApiFactory getGatewayNet() {
     return fromContext(GATEWAY_CONTEXT);
+  }
+
+  public static ApiFactory getGatewayNet2() {
+    return fromContext(GATEWAY_CONTEXT2);
+  }
+
+  public static ApiFactory getGatewayNet3() {
+    return fromContext(GATEWAY_CONTEXT3);
   }
 
   public static ApiFactory getDirectNet() {
