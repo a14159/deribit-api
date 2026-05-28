@@ -22,6 +22,6 @@ public class _Instrument {
   public Double min_trade_amount;
   public String option_type;
   public String settlement_period;
-  public String strike;
+  public Double strike;
   public Double tick_size;
 }
