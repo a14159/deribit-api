@@ -18,6 +18,7 @@ public final class GetPositions extends UserRestRequest<GetPositions.Response> {
 
   private String currency;
   private String kind;
+  private String subAccountId;
 
   GetPositions(IActor actor, RestContext context) {
     super(actor, context);
@@ -30,6 +31,11 @@ public final class GetPositions extends UserRestRequest<GetPositions.Response> {
 
   public GetPositions setKind(String kind) {
     this.kind = kind;
+    return this;
+  }
+
+  public GetPositions setSubAccountId(String subAccountId) {
+    this.subAccountId = subAccountId;
     return this;
   }
 
@@ -52,6 +58,10 @@ public final class GetPositions extends UserRestRequest<GetPositions.Response> {
 
     if (kind != null) {
       builder.add("kind", kind);
+    }
+
+    if (subAccountId != null) {
+      builder.add("subaccount_id", subAccountId);
     }
 
     return builder.build();
