@@ -18,7 +18,7 @@ public final class GetPositions extends UserRestRequest<GetPositions.Response> {
 
   private String currency;
   private String kind;
-  private String subAccountId;
+  private Integer subAccountId;
 
   GetPositions(IActor actor, RestContext context) {
     super(actor, context);
@@ -34,7 +34,7 @@ public final class GetPositions extends UserRestRequest<GetPositions.Response> {
     return this;
   }
 
-  public GetPositions setSubAccountId(String subAccountId) {
+  public GetPositions setSubAccountId(Integer subAccountId) {
     this.subAccountId = subAccountId;
     return this;
   }
