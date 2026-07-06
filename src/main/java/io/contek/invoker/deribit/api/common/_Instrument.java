@@ -12,6 +12,7 @@ public class _Instrument {
   public String instrument_type;
   public String block_trade_commission;
   public Double contract_size;
+  public Double qty_tick_size;
   public Long creation_timestamp;
   public Long expiration_timestamp;
   public boolean is_active;
