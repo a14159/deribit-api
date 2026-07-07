@@ -17,6 +17,9 @@ public class _Ticker {
   public Double interest_rate;
   public Double last_price;
   public Double mark_price;
+  public Double bid_iv;
+  public Double ask_iv;
+  public Double mark_iv;
   public Double max_price;
   public Double min_price;
   public Double open_interest;
