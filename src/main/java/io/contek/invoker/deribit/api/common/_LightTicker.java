@@ -9,8 +9,8 @@ public class _LightTicker {
   public Double best_ask_price;
   public Double best_bid_amount;
   public Double best_bid_price;
-  public Double current_funding;
-  public Double funding_8h;
+//  public Double current_funding;
+//  public Double funding_8h;
 //  public _Greek greeks;
 //  public Double index_price;
   public String instrument_name;
