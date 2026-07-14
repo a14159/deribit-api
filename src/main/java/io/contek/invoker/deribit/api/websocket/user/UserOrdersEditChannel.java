@@ -68,9 +68,13 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       loRequest.params.price = price;
       loRequest.params.amount = amount;
       loRequest.params.contracts = contracts;
-      loRequest.params.post_only = postOnly;
-      if (reduceOnly) {
-        loRequest.params.reduce_only = reduceOnly;
+      if (!postOnly) { // default true
+        loRequest.params.post_only = false;
+      } else {
+        loRequest.params.post_only = null;
+      }
+      if (reduceOnly) { // default false
+        loRequest.params.reduce_only = true;
       } else {
         loRequest.params.reduce_only = null;
       }
