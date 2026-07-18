@@ -12,7 +12,7 @@ import io.contek.invoker.deribit.api.websocket.common.WebSocketTestResponse;
 import javax.annotation.concurrent.ThreadSafe;
 
 import static io.contek.invoker.commons.websocket.SubscriptionState.SUBSCRIBING;
-import static io.contek.invoker.commons.websocket.SubscriptionState.UNSUBSCRIBING;
+import static io.contek.invoker.commons.websocket.SubscriptionState.UNSUBSCRIBED;
 
 @ThreadSafe
 public abstract class UserWebSocketNoSubscribeChannel<Message extends WebSocketResponse<Data>, Data>
@@ -47,8 +47,9 @@ public abstract class UserWebSocketNoSubscribeChannel<Message extends WebSocketR
 
   @Override
   protected SubscriptionState unsubscribe(WebSocketSession webSocketSession) {
-    lastStatusSent = UNSUBSCRIBING;
-    return UNSUBSCRIBING;
+    reset(); // prev: no reset
+    lastStatusSent = UNSUBSCRIBED; // prev: UNSUBSCRIBING
+    return UNSUBSCRIBED; // prev: UNSUBSCRIBING
   }
 
   @Override

@@ -241,10 +241,6 @@ public final class UserOrdersEditChannel extends UserWebSocketNoSubscribeChannel
       lastStatusSent = SUBSCRIBED;
       return SubscriptionState.SUBSCRIBED;
     }
-    if (lastStatusSent == UNSUBSCRIBING) {
-      lastStatusSent = UNSUBSCRIBED;
-      return SubscriptionState.SUBSCRIBED;
-    }
     return null;
   }
 
