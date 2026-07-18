@@ -7,8 +7,8 @@ public abstract class RestResponse<T> {
 
   public String jsonrpc;
   public int id;
-  public Long usIn;
-  public Long usOut;
-  public Long usDiff;
+  public long usIn = -1L;
+  public long usOut = -1L;
+  public long usDiff = -1L;
   public T result;
 }

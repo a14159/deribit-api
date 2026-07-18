@@ -20,7 +20,7 @@ public class _LightOrder {
 //  public Boolean auto_replaced;
 //  public String stop_order_id;
   public long last_update_timestamp;
-  public Boolean post_only;
+  public boolean post_only;
 //  public Boolean replaced;
   public Double filled_amount;
 //  public Double average_price;

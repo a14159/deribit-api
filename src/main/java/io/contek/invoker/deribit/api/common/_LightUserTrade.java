@@ -12,7 +12,7 @@ public class _LightUserTrade {
   public String state;
   public boolean self_trade;
 //  public boolean reduce_only;
-  public Double price;
+  public double price;
 //  public boolean post_only;
   public String order_type;
   public String order_id;
@@ -22,9 +22,9 @@ public class _LightUserTrade {
   public String instrument_name;
 //  public Double index_price;
   public String fee_currency;
-  public Double fee;
+  public double fee;
   public String direction;
-  public Double amount;
+  public double amount;
 //  public String advanced;
 //  public String block_trade_id;
 //  public Double iv;

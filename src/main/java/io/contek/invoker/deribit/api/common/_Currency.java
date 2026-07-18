@@ -10,8 +10,8 @@ public class _Currency {
   public String currency;
   public String currency_long;
   public Integer fee_precision;
-  public Integer min_confirmations;
+  public int min_confirmations;
   public Double min_withdrawal_fee;
-  public Double withdrawal_fee;
+  public double withdrawal_fee;
   public List<_WithdrawPriority> withdrawal_priorities;
 }

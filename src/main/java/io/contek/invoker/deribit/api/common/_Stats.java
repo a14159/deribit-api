@@ -4,6 +4,6 @@ public class _Stats {
   public Double high;
   public Double low;
   public Double price_change;
-  public Double volume;
+  public double volume;
   public Double volume_usd;
 }

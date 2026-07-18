@@ -6,10 +6,10 @@ import javax.annotation.concurrent.NotThreadSafe;
 public class _Deposit {
 
   public String address;
-  public Double amount;
+  public double amount;
   public String currency;
-  public Long received_timestamp;
+  public long received_timestamp;
   public String state;
   public String transaction_id;
-  public Long updated_timestamp;
+  public long updated_timestamp;
 }

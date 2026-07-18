@@ -12,20 +12,20 @@ public class _Ticker {
   public Double current_funding;
   public Double funding_8h;
   public _Greek greeks;
-  public Double index_price;
+  public double index_price;
   public String instrument_name;
   public Double interest_rate;
   public Double last_price;
-  public Double mark_price;
+  public double mark_price;
   public Double bid_iv;
   public Double ask_iv;
   public Double mark_iv;
-  public Double max_price;
-  public Double min_price;
+  public double max_price;
+  public double min_price;
   public Double open_interest;
   public Double settlement_price;
   public String state;
   public _Stats stats;
-  public Long timestamp;
+  public long timestamp;
   public long traceNano = System.nanoTime();
 }

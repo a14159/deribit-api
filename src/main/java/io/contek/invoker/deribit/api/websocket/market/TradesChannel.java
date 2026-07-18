@@ -43,7 +43,7 @@ public final class TradesChannel
   @NotThreadSafe
   public static final class Data {
 
-    public Double amount;
+    public double amount;
     public String block_trade_id;
     public String direction;
     public double index_price;
@@ -51,7 +51,7 @@ public final class TradesChannel
     public double iv;
     public String liquidation;
     public double mark_price;
-    public Double price;
+    public double price;
     public int tick_direction;
     public long timestamp;
     public String trade_id;

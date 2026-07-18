@@ -13,9 +13,9 @@ public class _SubAccountSummary {
 
     public static class _PortfolioPosition {
         public String currency;
-        public Double equity;
-        public Double spot_reserve;
-        public Double initial_margin;
-        public Double maintenance_margin;
+        public double equity;
+        public double spot_reserve;
+        public double initial_margin;
+        public double maintenance_margin;
     }
 }

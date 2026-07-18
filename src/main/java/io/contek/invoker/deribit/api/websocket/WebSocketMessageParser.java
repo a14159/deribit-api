@@ -47,7 +47,7 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
   }
 
   private WebSocketResponse<?> toResponseMessage(JSONObject obj) {
-    int id = Integer.parseInt(obj.get("id").toString());
+    int id = obj.getIntValue("id");
     Class<? extends WebSocketResponse<?>> type;
     synchronized (pendingRequests) {
       type = pendingRequests.remove(id);

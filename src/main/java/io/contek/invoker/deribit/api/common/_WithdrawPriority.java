@@ -5,6 +5,6 @@ import javax.annotation.concurrent.NotThreadSafe;
 @NotThreadSafe
 public class _WithdrawPriority {
 
-  public Double value;
+  public double value;
   public String name;
 }

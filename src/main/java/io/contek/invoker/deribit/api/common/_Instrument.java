@@ -11,19 +11,19 @@ public class _Instrument {
   public int instrument_id;
   public String instrument_type;
   public String block_trade_commission;
-  public Double contract_size;
+  public double contract_size;
   public Double qty_tick_size;
-  public Long creation_timestamp;
-  public Long expiration_timestamp;
+  public long creation_timestamp;
+  public long expiration_timestamp;
   public boolean is_active;
   public String kind;
   public Long leverage;
   public String maker_commission;
   public String taker_commission;
-  public Double min_trade_amount;
+  public double min_trade_amount;
   public String option_type;
   public String settlement_period;
   public String settlement_currency;
   public Double strike;
-  public Double tick_size;
+  public double tick_size;
 }

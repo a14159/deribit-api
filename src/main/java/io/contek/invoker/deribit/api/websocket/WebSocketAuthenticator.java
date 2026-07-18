@@ -101,7 +101,7 @@ final class WebSocketAuthenticator implements IWebSocketAuthenticator {
       return;
     }
 
-    if (!response.id.equals(request.id)) {
+    if (request.id == null || response.id != request.id) {
       return;
     }
 

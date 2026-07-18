@@ -11,8 +11,8 @@ public class _BookSummary {
   public Double ask_price;
   public Double bid_price;
   public Double mid_price;
-  public Double mark_price;
-  public Double volume;
+  public double mark_price;
+  public double volume;
   public Double volume_usd;
   public Double price_change;
   public Double open_interest;
@@ -20,5 +20,5 @@ public class _BookSummary {
   public Double last;
   public Double high;
   public Double estimated_delivery_price;
-  public Long creation_timestamp;
+  public long creation_timestamp;
 }

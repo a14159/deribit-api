@@ -6,29 +6,29 @@ import javax.annotation.concurrent.NotThreadSafe;
 @NotThreadSafe
 public class _Position {
 
-  public Double average_price;
+  public double average_price;
   public Double average_price_usd;
-  public Double delta;
+  public double delta;
   public String direction;
   public Double estimated_liquidation_price;
-  public Double floating_profit_loss;
+  public double floating_profit_loss;
   public Double floating_profit_loss_usd;
   public Double gamma;
-  public Double index_price;
-  public Double initial_margin;
+  public double index_price;
+  public double initial_margin;
   public String instrument_name;
   public String kind;
   public Integer leverage;
-  public Double maintenance_margin;
-  public Double mark_price;
+  public double maintenance_margin;
+  public double mark_price;
   public Double open_orders_margin;
   public Double realized_funding;
-  public Double realized_profit_loss;
+  public double realized_profit_loss;
   public Double settlement_price;
-  public Double size;
+  public double size;
   public Double size_currency;
   public Double theta;
-  public Double total_profit_loss;
+  public double total_profit_loss;
   public Double vega;
 
   public double getSizeCurrency() {

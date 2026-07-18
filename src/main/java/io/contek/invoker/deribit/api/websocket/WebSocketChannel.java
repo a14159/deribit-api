@@ -92,7 +92,7 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
         return null;
       }
 
-      if (confirmation.id == null || !confirmation.id.equals(command.id)) {
+      if (command.id == null || confirmation.id != command.id) {
         return null;
       }
 

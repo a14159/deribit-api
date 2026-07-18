@@ -7,7 +7,7 @@ public class _Order {
 
   public String order_state;
   public Double max_show;
-  public Boolean api;
+  public boolean api;
   public Double amount;
   public Boolean web;
   public String instrument_name;
@@ -19,8 +19,8 @@ public class _Order {
   public String time_in_force;
   public Boolean auto_replaced;
   public String stop_order_id;
-  public Long last_update_timestamp;
-  public Boolean post_only;
+  public long last_update_timestamp;
+  public boolean post_only;
   public Boolean replaced;
   public Double filled_amount;
   public Double average_price;
@@ -30,7 +30,7 @@ public class _Order {
   public String app_name;
   public Double stop_price;
   public String label;
-  public Long creation_timestamp;
+  public long creation_timestamp;
   public String direction;
   public Boolean is_liquidation;
   public String order_type;
