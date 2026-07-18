@@ -15,7 +15,7 @@ public class _LightOrder {
 //  public Boolean triggered;
 //  public Boolean block_trade;
 //  public String original_order_type;
-  public Double price;
+  public Object price;
   public String time_in_force;
 //  public Boolean auto_replaced;
 //  public String stop_order_id;
@@ -38,4 +38,14 @@ public class _LightOrder {
 //  public Double profit_loss;
 //  public Double implv;
 //  public String trigger;
+
+  public double getPrice() {
+    if (price instanceof Number number) {
+      return number.doubleValue();
+    }
+    if ("market_price".equals(price)) {
+      return 0.0;
+    }
+    throw new IllegalStateException("Unexpected price value: " + price);
+  }
 }
