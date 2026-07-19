@@ -22,7 +22,7 @@ public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrd
   private String label;
   private String price;
   private String time_in_force;
-  private Double max_show;
+  private String max_show;
   private Boolean post_only;
   private Boolean reject_post_only;
   private Boolean reduce_only;
@@ -70,7 +70,7 @@ public abstract class BasePlaceOrderRequest extends UserRestRequest<BasePlaceOrd
     return this;
   }
 
-  public final BasePlaceOrderRequest setMaxShow(double maxShow) {
+  public final BasePlaceOrderRequest setMaxShow(String maxShow) {
     this.max_show = maxShow;
     return this;
   }

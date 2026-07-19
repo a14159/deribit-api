@@ -17,7 +17,7 @@ public final class GetClosePosition extends UserRestRequest<GetClosePosition.Res
 
   private String instrument_name;
   private String type;
-  private Double price;
+  private String price;
 
   GetClosePosition(IActor actor, RestContext context) {
     super(actor, context);
@@ -33,7 +33,7 @@ public final class GetClosePosition extends UserRestRequest<GetClosePosition.Res
     return this;
   }
 
-  public GetClosePosition setPrice(double price) {
+  public GetClosePosition setPrice(String price) {
     this.price = price;
     return this;
   }
