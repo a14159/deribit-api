@@ -3,6 +3,7 @@ package io.contek.invoker.deribit.api.websocket;
 import io.contek.invoker.commons.actor.IActor;
 import io.contek.invoker.commons.websocket.AnyWebSocketMessage;
 import io.contek.invoker.commons.websocket.BaseWebSocketApi;
+import io.contek.invoker.commons.websocket.IWebSocketAuthenticator;
 import io.contek.invoker.commons.websocket.WebSocketCall;
 import io.contek.invoker.commons.websocket.WebSocketContext;
 import io.contek.invoker.security.ICredential;
@@ -32,7 +33,10 @@ public abstract class WebSocketApi extends BaseWebSocketApi {
     super(
         actor,
         parser,
-        new WebSocketAuthenticator(actor.getCredential(), requestIdGenerator, actor.getClock()),
+        actor.getCredential().isAnonymous()
+            ? IWebSocketAuthenticator.noOp()
+            : new WebSocketAuthenticator(
+                actor.getCredential(), requestIdGenerator, actor.getClock()),
         new WebSocketLiveKeeper(requestIdGenerator));
     this.context = context;
     this.requestIdGenerator = requestIdGenerator;
