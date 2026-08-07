@@ -173,6 +173,12 @@ public final class ApiFactory {
       return new MarketRestApi(actor, restContext);
     }
 
+    public MarketRestApi market(Duration readTimeout) {
+      RestContext restContext = withReadTimeout(context.getRestContext(), readTimeout);
+      IActor actor = actorFactory.create(null, restContext);
+      return new MarketRestApi(actor, restContext);
+    }
+
     public UserRestApi user(ApiKey apiKey) {
       RestContext restContext = context.getRestContext();
       IActor actor = actorFactory.create(apiKey, restContext);
@@ -196,5 +202,17 @@ public final class ApiFactory {
       IActor actor = actorFactory.create(apiKey, wsContext);
       return new UserWebSocketApi(actor, wsContext);
     }
+  }
+
+  private static RestContext withReadTimeout(RestContext context, Duration readTimeout) {
+    return RestContext.newBuilder()
+        .setBaseUrl(context.getBaseUrl())
+        .setLogHeaders(context.getLogHeaders())
+        .setLogPayload(context.getLogPayload())
+        .setLogTimestamps(context.getLogTimestamps())
+        .setConnectionTimeout(context.getConnectionTimeout())
+        .setReadTimeout(readTimeout)
+        .setWriteTimeout(context.getWriteTimeout())
+        .build();
   }
 }
