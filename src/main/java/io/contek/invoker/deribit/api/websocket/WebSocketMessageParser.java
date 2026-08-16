@@ -12,7 +12,7 @@ import io.contek.invoker.deribit.api.websocket.common.constants.WebSocketChannel
 import io.contek.invoker.deribit.api.websocket.market.BookSnapshotChannel;
 import io.contek.invoker.deribit.api.websocket.market.TradesChannel;
 import io.contek.invoker.deribit.api.websocket.user.*;
-import is.fm.util.ExpiringIntMap;
+import is.fm.util.collections.ExpiringIntMap;
 
 import javax.annotation.concurrent.ThreadSafe;
 

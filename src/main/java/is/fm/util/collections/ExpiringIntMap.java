@@ -1,11 +1,11 @@
-package is.fm.util;
+package is.fm.util.collections;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
 
 // See io/netty/util/collection/KObjectHashMap.template
 // performance + garbage free (no boxing/unboxing)
-public final class ExpiringIntMap<T> {
+public final class ExpiringIntMap<T> implements BasicIntMap<T> {
 
     private final int maxCapacity;
 
@@ -30,7 +30,7 @@ public final class ExpiringIntMap<T> {
     }
 
     public T put(int key, T value) {
-        int bucket = key & mask;
+        final int bucket = key & mask;
         int index = bucket;
 
         final int[] localKeys = keys;
@@ -60,6 +60,9 @@ public final class ExpiringIntMap<T> {
             // Conflict, keep probing until we reach the starting point
             if ((index = (index + 1) & mask) == bucket) {
                 // Can only happen if the map is full
+                if (removeEldestEntry()) {
+                    return put(key, value);
+                }
                 throw new IllegalStateException("Unable to insert");
             }
         }
@@ -74,7 +77,6 @@ public final class ExpiringIntMap<T> {
             for (int i = 0; i < capacity; i++) {
                 if (localKeysCnt[i] != 0 && localKeysCnt[i] <= maxAge) {
                     remove(keys[i]);
-                    seen++; // remove will decrement seen we don't need to do it here
                     return true;
                 }
             }
@@ -84,7 +86,7 @@ public final class ExpiringIntMap<T> {
     }
 
     public T remove(int key) {
-        int bucket = key & mask;
+        final int bucket = key & mask;
         int index = bucket;
 
         final int[] localKeys = keys;
@@ -100,7 +102,6 @@ public final class ExpiringIntMap<T> {
                 localVals[index] = null;
                 localKeys[index] = 0;
                 localKeysCnt[index] = 0;
-                seen--;
                 size--;
 
                 // Knuth Section 6.4 Algorithm R, also used by the JDK's IdentityHashMap.
@@ -135,7 +136,7 @@ public final class ExpiringIntMap<T> {
     }
 
     public T get(int key) {
-        int bucket = key & mask;
+        final int bucket = key & mask;
         int index = bucket;
 
         final int[] localKeys = keys;
