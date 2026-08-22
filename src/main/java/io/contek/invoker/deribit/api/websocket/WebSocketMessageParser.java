@@ -20,7 +20,7 @@ import javax.annotation.concurrent.ThreadSafe;
 final class WebSocketMessageParser extends WebSocketTextMessageParser {
 
 //  private final Map<Integer, Class<? extends WebSocketResponse<?>>> pendingRequests = new ExpiringMap<>(100);
-  private final ExpiringIntMap<Class<? extends WebSocketResponse<?>>> pendingRequests = new ExpiringIntMap<>(33);
+  private final ExpiringIntMap<Class<? extends WebSocketResponse<?>>> pendingRequests = new ExpiringIntMap<>(129);
 
   public void register(int id, Class<? extends WebSocketResponse<?>> type) {
     synchronized (pendingRequests) {

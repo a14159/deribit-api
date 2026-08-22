@@ -1,6 +1,7 @@
 package is.fm.util.collections;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 // See io/netty/util/collection/KObjectHashMap.template
@@ -21,8 +22,8 @@ public final class ExpiringIntMap<T> implements BasicIntMap<T> {
     @SuppressWarnings("unchecked")
     public ExpiringIntMap(int maxCapacity) {
         this.maxCapacity = maxCapacity;
-        // size = next power of two
-        int capacity = 1 << (32 - Integer.numberOfLeadingZeros(maxCapacity - 1));
+        // Keep the table larger than the maximum logical size so probes and eviction have headroom.
+        int capacity = 1 << (32 - Integer.numberOfLeadingZeros(maxCapacity));  // was (maxCapacity - 1)
         this.mask = capacity - 1;
         keys = new int[capacity];
         keysCnt = new int[capacity];
@@ -30,6 +31,8 @@ public final class ExpiringIntMap<T> implements BasicIntMap<T> {
     }
 
     public T put(int key, T value) {
+        Objects.requireNonNull(value, "value");
+
         final int bucket = key & mask;
         int index = bucket;
 
