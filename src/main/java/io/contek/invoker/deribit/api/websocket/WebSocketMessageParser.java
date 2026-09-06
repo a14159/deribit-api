@@ -17,6 +17,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.concurrent.ThreadSafe;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ThreadSafe
 final class WebSocketMessageParser extends WebSocketTextMessageParser {
@@ -26,6 +28,9 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
 
 //  private final Map<Integer, Class<? extends WebSocketResponse<?>>> pendingRequests = new ExpiringMap<>(100);
   private final ExpiringIntMap<Class<? extends WebSocketResponse<?>>> pendingRequests = new ExpiringIntMap<>(129);
+  private final Set<String> fullTickerChannels = ConcurrentHashMap.newKeySet();
+
+  private volatile boolean hasFullTickerChannels;
 
   private int unknownResponseTypes;
 
@@ -36,7 +41,12 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
   }
 
   @Override
-  public void register(IWebSocketComponent component) {}
+  public void register(IWebSocketComponent component) {
+    if (component instanceof UserFullTickersChannel channel) {
+      fullTickerChannels.add(channel.getId().getValue());
+      hasFullTickerChannels = true;
+    }
+  }
 
   @Override
   protected AnyWebSocketMessage fromText(String text) {
@@ -95,6 +105,9 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
       return obj.toJavaObject(UserOrdersChannel.Message.class);
     }
     if (channel.startsWith(WebSocketChannelKeys._tickers)) {
+      if (hasFullTickerChannels && fullTickerChannels.contains(channel)) {
+        return obj.toJavaObject(UserFullTickersChannel.Message.class);
+      }
       return obj.toJavaObject(UserTickersChannel.Message.class);
     }
     if (channel.startsWith(WebSocketChannelKeys._book)) {

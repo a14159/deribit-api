@@ -16,6 +16,7 @@ public final class UserWebSocketApi extends WebSocketApi {
   private final Map<UserChangesChannel.Id, UserChangesChannel> userChangesChannels = new HashMap<>();
   private final Map<UserTradesChannel.Id, UserTradesChannel> userTradesChannels = new HashMap<>();
   private final Map<UserTickersChannel.Id, UserTickersChannel> userTickersChannels = new HashMap<>();
+  private final Map<UserFullTickersChannel.Id, UserFullTickersChannel> userFullTickersChannels = new HashMap<>();
   private final Map<UserBookChangeChannel.Id, UserBookChangeChannel> bookChangeChannels = new HashMap<>();
 
   private final AtomicReference<UserOrdersEditChannel> orderEditChannel = new AtomicReference<>();
@@ -66,6 +67,18 @@ public final class UserWebSocketApi extends WebSocketApi {
         UserTickersChannel.Id.of(instrument, interval),
           k -> {
             UserTickersChannel result = new UserTickersChannel(k, getRequestIdGenerator());
+            attach(result);
+            return result;
+          });
+    }
+  }
+
+  public UserFullTickersChannel getUserFullTickersChannel(String instrument, String interval) {
+    synchronized (userFullTickersChannels) {
+      return userFullTickersChannels.computeIfAbsent(
+        UserFullTickersChannel.Id.of(instrument, interval),
+          k -> {
+            UserFullTickersChannel result = new UserFullTickersChannel(k, getRequestIdGenerator());
             attach(result);
             return result;
           });
