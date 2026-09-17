@@ -17,11 +17,14 @@ public class _Position {
   public double index_price;
   public double initial_margin;
   public String instrument_name;
+  /** Exchange value used to calculate realized funding; perpetual instruments only. */
+  public Double interest_value;
   public String kind;
   public Integer leverage;
   public double maintenance_margin;
   public double mark_price;
   public Double open_orders_margin;
+  /** Cumulative funding in the current session, included in realized PnL; not a payment delta. */
   public Double realized_funding;
   public double realized_profit_loss;
   public Double settlement_price;
@@ -29,6 +32,7 @@ public class _Position {
   public Double size_currency;
   public Double theta;
   public double total_profit_loss;
+  public Long user_id;
   public Double vega;
 
   public double getSizeCurrency() {

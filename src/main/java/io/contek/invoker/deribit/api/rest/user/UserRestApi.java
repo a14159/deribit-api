@@ -56,6 +56,10 @@ public final class UserRestApi {
     return new GetDeposits(actor, context);
   }
 
+  public GetTransactionLog getTransactionLog() {
+    return new GetTransactionLog(actor, context);
+  }
+
   public GetPosition getPosition() {
     return new GetPosition(actor, context);
   }

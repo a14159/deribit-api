@@ -14,6 +14,11 @@ import java.util.List;
 
 import static java.lang.String.format;
 
+/**
+ * Consolidated orders, positions and trades for an instrument or kind/currency.
+ * Funding-only notifications are not guaranteed by the exchange documentation.
+ * Position funding values are session cumulative, not individual payments.
+ */
 @ThreadSafe
 public final class UserChangesChannel
     extends UserWebSocketChannel<UserChangesChannel.Message, UserChangesChannel.Data> {

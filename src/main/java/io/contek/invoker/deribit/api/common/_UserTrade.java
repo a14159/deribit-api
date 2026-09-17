@@ -8,6 +8,10 @@ public class _UserTrade {
   public long trade_seq;
   public String trade_id;
   public long timestamp;
+  public Long starbase_timestamp;
+  public Long starbase_match_id;
+  public Long starbase_order_id;
+  public String starbase_client_order_id;
   public int tick_direction;
   public String state;
   public boolean self_trade;

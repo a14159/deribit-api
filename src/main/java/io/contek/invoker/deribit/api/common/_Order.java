@@ -20,6 +20,9 @@ public class _Order {
   public Boolean auto_replaced;
   public String stop_order_id;
   public long last_update_timestamp;
+  public Long starbase_last_update_timestamp;
+  public Long starbase_order_id;
+  public String starbase_client_order_id;
   public boolean post_only;
   public Boolean replaced;
   public Double filled_amount;
