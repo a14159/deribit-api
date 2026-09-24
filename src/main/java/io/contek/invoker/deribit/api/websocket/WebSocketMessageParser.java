@@ -16,6 +16,7 @@ import is.fm.util.collections.ExpiringIntMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,17 +27,21 @@ final class WebSocketMessageParser extends WebSocketTextMessageParser {
   private static final Logger log = LogManager.getLogger(WebSocketMessageParser.class);
   private static final int MAX_UNKNOWN_RESPONSE_TYPES = 20;
 
-//  private final Map<Integer, Class<? extends WebSocketResponse<?>>> pendingRequests = new ExpiringMap<>(100);
   private final ExpiringIntMap<Class<? extends WebSocketResponse<?>>> pendingRequests = new ExpiringIntMap<>(129);
   private final Set<String> fullTickerChannels = ConcurrentHashMap.newKeySet();
 
   private volatile boolean hasFullTickerChannels;
 
+  @GuardedBy("pendingRequests")
+  private int requestIdCount;
+  @GuardedBy("pendingRequests")
   private int unknownResponseTypes;
 
-  public void register(int id, Class<? extends WebSocketResponse<?>> type) {
+  public int register(Class<? extends WebSocketResponse<?>> type) {
     synchronized (pendingRequests) {
+      int id = ++requestIdCount;
       pendingRequests.put(id, type);
+      return id;
     }
   }
 

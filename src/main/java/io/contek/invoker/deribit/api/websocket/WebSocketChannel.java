@@ -7,9 +7,9 @@ import io.contek.invoker.deribit.api.websocket.common.WebSocketSingleChannelMess
 import io.contek.invoker.deribit.api.websocket.common.WebSocketSubscriptionConfirmation;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static io.contek.invoker.commons.websocket.SubscriptionState.*;
 import static io.contek.invoker.deribit.api.websocket.common.constants.WebSocketOutboundKeys._subscribe;
@@ -22,8 +22,9 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
   private final String scope;
   private final WebSocketRequestIdGenerator requestIdGenerator;
 
-  private final AtomicReference<WebSocketRequest<SubscriptionParams>> pendingRequestHolder =
-      new AtomicReference<>();
+  private final Object pendingRequestLock = new Object();
+  @GuardedBy("pendingRequestLock")
+  private WebSocketRequest<SubscriptionParams> pendingRequest;
 
   protected WebSocketChannel(WebSocketChannelId<Message> id, String scope, WebSocketRequestIdGenerator requestIdGenerator) {
     super(id);
@@ -38,29 +39,18 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
 
   @Override
   protected final SubscriptionState subscribe(WebSocketSession session) {
-    synchronized (pendingRequestHolder) {
-      if (pendingRequestHolder.get() != null) {
-        throw new IllegalStateException();
-      }
-
-      WebSocketChannelId<Message> id = getId();
-      SubscriptionParams params = new SubscriptionParams();
-      params.channels = List.of(id.getValue());
-
-      WebSocketRequest<SubscriptionParams> request = new WebSocketRequest<>();
-      request.id = requestIdGenerator.getNextRequestId(WebSocketSubscriptionConfirmation.class);
-      request.method = getSubscribeMethod();
-      request.params = params;
-      session.send(request);
-      pendingRequestHolder.set(request);
-    }
-    return SUBSCRIBING;
+    return sendSubscriptionRequest(session, getSubscribeMethod(), SUBSCRIBING);
   }
 
   @Override
   protected final SubscriptionState unsubscribe(WebSocketSession session) {
-    synchronized (pendingRequestHolder) {
-      if (pendingRequestHolder.get() != null) {
+    return sendSubscriptionRequest(session, getUnsubscribeMethod(), UNSUBSCRIBING);
+  }
+
+  private SubscriptionState sendSubscriptionRequest(
+      WebSocketSession session, String method, SubscriptionState pendingState) {
+    synchronized (pendingRequestLock) {
+      if (pendingRequest != null) {
         throw new IllegalStateException();
       }
 
@@ -70,13 +60,13 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
 
       WebSocketRequest<SubscriptionParams> request = new WebSocketRequest<>();
       request.id = requestIdGenerator.getNextRequestId(WebSocketSubscriptionConfirmation.class);
-      request.method = getUnsubscribeMethod();
+      request.method = method;
       request.params = params;
       session.send(request);
-      pendingRequestHolder.set(request);
+      pendingRequest = request;
     }
 
-    return UNSUBSCRIBING;
+    return pendingState;
   }
 
   @Nullable
@@ -86,8 +76,8 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
       return null;
     }
 
-    synchronized (pendingRequestHolder) {
-      WebSocketRequest<SubscriptionParams> command = pendingRequestHolder.get();
+    synchronized (pendingRequestLock) {
+      WebSocketRequest<SubscriptionParams> command = pendingRequest;
       if (command == null) {
         return null;
       }
@@ -117,8 +107,8 @@ public abstract class WebSocketChannel<Message extends WebSocketSingleChannelMes
 
   @Override
   protected final void reset() {
-    synchronized (pendingRequestHolder) {
-      pendingRequestHolder.set(null);
+    synchronized (pendingRequestLock) {
+      pendingRequest = null;
     }
   }
 
