@@ -84,6 +84,14 @@ public final class UserRestApi {
     return new GetUserTradesByOrder(actor, context);
   }
 
+  public GetUserTradesByInstrument getUserTradesByInstrument() {
+    return new GetUserTradesByInstrument(actor, context);
+  }
+
+  public GetUserTradesByCurrency getUserTradesByCurrency() {
+    return new GetUserTradesByCurrency(actor, context);
+  }
+
   public GetUserTradesByInstrumentAndTime getUserTradesByInstrumentAndTime() {
     return new GetUserTradesByInstrumentAndTime(actor, context);
   }
